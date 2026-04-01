@@ -4,29 +4,26 @@ project(libgkit_graphic LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 设置默认构建类型
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
 endif()
 
-# 添加 third_party cmake 模块路径
+# add third_party cmake module path
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/glad/cmake")
 
-# 构建 third_party 依赖
+# build third_party
 add_subdirectory(third_party)
 
-# 构建 GLAD OpenGL 库
-# 使用 glad_add_library 自动生成 OpenGL 规范代码
-# REPRODUCIBLE: 使用本地规范文件，不从远程下载
-# LOCATION: 将生成的源码放到 build/glad 目录下
+# build GLAD OpenGL lib
+# use glad_add_library auto build (path:./build/glad)
 glad_add_library(glad_gl SHARED API "gl:core=4.6" REPRODUCIBLE
     LOCATION "${CMAKE_BINARY_DIR}/glad")
 
-# 创建可执行目标示例 (可选)
+# create main target (optional)
 # add_executable(${PROJECT_NAME} src/main.cpp)
 # target_link_libraries(${PROJECT_NAME} PRIVATE glad_gl glfw)
 
-# 测试目标
+# test target
 add_executable(test_app test/test.cpp)
 target_include_directories(test_app PRIVATE
     ${CMAKE_SOURCE_DIR}/third_party/glm
