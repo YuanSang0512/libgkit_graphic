@@ -1,21 +1,55 @@
 #include <iostream>
-#include <glm/glm.hpp>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
 int main()
 {
-    // Test GLM
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 mat = glm::mat4(1.0f);
-    std::cout << "GLM: vec4 = (" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << ")" << std::endl;
+    #pragma region init
+    // 初始化 GLFW
+    if (!glfwInit())
+    {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
+    }
 
-    // Test GLFW
-    std::cout << "GLFW version: " << GLFW_VERSION_MAJOR << "." << GLFW_VERSION_MINOR << "." << GLFW_VERSION_REVISION << std::endl;
+    // 配置 OpenGL 上下文 (Core Profile)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Test GLAD
-    std::cout << "GLAD included successfully" << std::endl;
+    // 创建窗口
+    GLFWwindow* window = glfwCreateWindow(1440, 720, "Test Window", nullptr, nullptr);
 
-    std::cout << "All libraries linked successfully!" << std::endl;
+    // 设置当前上下文
+    glfwMakeContextCurrent(window);
+
+    // 初始化 GLAD (在设置上下文后调用)
+    if (!gladLoadGL(glfwGetProcAddress))
+    {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+    #pragma endregion
+
+    // 渲染循环
+    while (!glfwWindowShouldClose(window))
+    {
+        // 处理输入事件
+        glfwPollEvents();
+
+        // 渲染
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // 交换缓冲区
+        glfwSwapBuffers(window);
+    }
+
+    // 清理
+    glfwTerminate();
+    std::cout << "Window closed successfully" << std::endl;
     return 0;
 }

@@ -19,9 +19,18 @@ add_subdirectory(third_party)
 glad_add_library(glad_gl SHARED API "gl:core=4.6" REPRODUCIBLE
     LOCATION "${CMAKE_BINARY_DIR}/glad")
 
-# create main target (optional)
-# add_executable(${PROJECT_NAME} src/main.cpp)
-# target_link_libraries(${PROJECT_NAME} PRIVATE glad_gl glfw)
+# create library target
+add_library(libgkit_graphic STATIC
+    src/Renderer.cpp
+    src/IndexBuffer.cpp
+    src/VertexBuffer.cpp
+    src/VertexArray.cpp
+    src/Shader.cpp
+)
+target_include_directories(libgkit_graphic PUBLIC
+    ${CMAKE_SOURCE_DIR}
+)
+target_link_libraries(libgkit_graphic PRIVATE glad_gl glfw)
 
 # test target
 add_executable(test_app test/test.cpp)
@@ -30,4 +39,4 @@ target_include_directories(test_app PRIVATE
     ${CMAKE_SOURCE_DIR}/third_party/glfw/include
     ${CMAKE_BINARY_DIR}/glad/include
 )
-target_link_libraries(test_app PRIVATE glad_gl glfw)
+target_link_libraries(test_app PRIVATE libgkit_graphic glad_gl glfw)
