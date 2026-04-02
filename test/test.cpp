@@ -54,48 +54,49 @@ int main()
         0, 1, 2
     };
 
-    // create vertex buffer
-    VertexBuffer vb(vertices, sizeof(vertices));
-
-    // create index buffer
-    IndexBuffer ib(indices, 3);
-
-    // create vertex array
-    VertexArray va;
-
-    // setup buffer layout (3个 float 组成 position)
-    VertexBufferLayout layout;
-    layout.Push<float>(3);
-    va.AddBuffer(vb, layout);
-
-    // load shader source
-    Shader shader("test/basic.shader");
-    #pragma endregion
-
-    #pragma region render
-    // create renderer
-    Renderer renderer;
-
-    // render cycle
-    while (!glfwWindowShouldClose(window))
     {
-        // process input event
-        glfwPollEvents();
+        // create vertex buffer
+        VertexBuffer vb(vertices, sizeof(vertices));
 
-        // ESC
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
+        // create index buffer
+        IndexBuffer ib(indices, 3);
 
-        // render core
-        renderer.Clear();
-        shader.Bind();
-        renderer.Draw(va, ib, shader);
+        // create vertex array
+        VertexArray va;
 
-        // swap buffer
-        glfwSwapBuffers(window);
+        // setup buffer layout (3个 float 组成 position)
+        VertexBufferLayout layout;
+        layout.Push<float>(3);
+        va.AddBuffer(vb, layout);
+
+        // load shader source
+        Shader shader("test/basic.shader");
+        #pragma endregion
+
+        #pragma region render
+        // create renderer
+        Renderer renderer;
+
+        // render cycle
+        while (!glfwWindowShouldClose(window))
+        {
+            // process input event
+            glfwPollEvents();
+
+            // ESC
+            if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+                glfwSetWindowShouldClose(window, true);
+
+            // render core
+            renderer.Clear();
+            shader.Bind();
+            renderer.Draw(va, ib, shader);
+
+            // swap buffer
+            glfwSwapBuffers(window);
+        }
+        #pragma endregion
     }
-    #pragma endregion
-
     // clear
     glfwTerminate();
     std::cout << "Window closed successfully" << std::endl;
