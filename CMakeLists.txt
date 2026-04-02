@@ -26,17 +26,18 @@ add_library(libgkit_graphic STATIC
     src/VertexBuffer.cpp
     src/VertexArray.cpp
     src/Shader.cpp
+    src/debug.cpp
 )
 target_include_directories(libgkit_graphic PUBLIC
     ${CMAKE_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/glad/include
 )
 target_link_libraries(libgkit_graphic PRIVATE glad_gl glfw)
 
 # test target
 add_executable(test_app test/test.cpp)
 target_include_directories(test_app PRIVATE
-    ${CMAKE_SOURCE_DIR}/third_party/glm
-    ${CMAKE_SOURCE_DIR}/third_party/glfw/include
     ${CMAKE_BINARY_DIR}/glad/include
+    ${CMAKE_SOURCE_DIR}
 )
 target_link_libraries(test_app PRIVATE libgkit_graphic glad_gl glfw)

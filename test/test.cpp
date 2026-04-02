@@ -2,28 +2,35 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
+#include "src/VertexArray.hpp"
+#include "src/VertexBuffer.hpp"
+#include "src/IndexBuffer.hpp"
+#include "src/VertexBufferLayout.hpp"
+#include "src/Shader.hpp"
+#include "src/Renderer.hpp"
+
 int main()
 {
     #pragma region init
-    // 初始化 GLFW
+    // init GLFW
     if (!glfwInit())
     {
         std::cerr << "Failed to initialize GLFW" << std::endl;
         return -1;
     }
 
-    // 配置 OpenGL 上下文 (Core Profile)
+    // config OpenGL context (Core Profile)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // 创建窗口
+    // build window
     GLFWwindow* window = glfwCreateWindow(1440, 720, "Test Window", nullptr, nullptr);
 
-    // 设置当前上下文
+    // setup current context
     glfwMakeContextCurrent(window);
 
-    // 初始化 GLAD (在设置上下文后调用)
+    // init GLAD
     if (!gladLoadGL(glfwGetProcAddress))
     {
         std::cerr << "Failed to initialize GLAD" << std::endl;
@@ -34,21 +41,62 @@ int main()
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
     #pragma endregion
 
-    // 渲染循环
+    #pragma region triangle
+    // vertex data
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f
+    };
+
+    // index data
+    unsigned int indices[] = {
+        0, 1, 2
+    };
+
+    // create vertex buffer
+    VertexBuffer vb(vertices, sizeof(vertices));
+
+    // create index buffer
+    IndexBuffer ib(indices, 3);
+
+    // create vertex array
+    VertexArray va;
+
+    // setup buffer layout (3个 float 组成 position)
+    VertexBufferLayout layout;
+    layout.Push<float>(3);
+    va.AddBuffer(vb, layout);
+
+    // load shader source
+    Shader shader("test/basic.shader");
+    #pragma endregion
+
+    #pragma region render
+    // create renderer
+    Renderer renderer;
+
+    // render cycle
     while (!glfwWindowShouldClose(window))
     {
-        // 处理输入事件
+        // process input event
         glfwPollEvents();
 
-        // 渲染
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // ESC
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, true);
 
-        // 交换缓冲区
+        // render core
+        renderer.Clear();
+        shader.Bind();
+        renderer.Draw(va, ib, shader);
+
+        // swap buffer
         glfwSwapBuffers(window);
     }
+    #pragma endregion
 
-    // 清理
+    // clear
     glfwTerminate();
     std::cout << "Window closed successfully" << std::endl;
     return 0;

@@ -1,3 +1,5 @@
+#include "debug.hpp"
+
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "VertexBufferLayout.hpp"

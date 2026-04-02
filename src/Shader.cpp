@@ -1,3 +1,5 @@
+#include "debug.hpp"
+
 #include "Shader.hpp"
 #include "Renderer.hpp"
 

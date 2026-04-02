@@ -1,7 +1,8 @@
 #pragma once
+#include "debug.hpp"
+
 #include <vector>
 #include <glad/gl.h>
-#include "Renderer.hpp"
 #include <glm/glm.hpp>
 
 struct VertexBufferElement

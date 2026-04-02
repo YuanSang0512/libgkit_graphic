@@ -1,5 +1,8 @@
+#include "debug.hpp"
+
 #include "VertexBuffer.hpp"
-#include "Renderer.hpp"
+#include <glad/gl.h>
+
 VertexBuffer::VertexBuffer(const void* data, unsigned int size, bool Dynamic)
 {
     GLCall(glGenBuffers(1, &m_RendererID));
