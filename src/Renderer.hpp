@@ -5,14 +5,13 @@
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "Shader.hpp"
-// Forward declarations
-
 
 /**
- * @brief Renderer class for managing OpenGL draw calls
+ * @brief Renderer class providing public rendering interface
  *
- * The Renderer provides an abstraction layer for issuing draw commands
- * to the GPU, handling different drawing modes and rendering techniques.
+ * The Renderer provides a unified interface for rendering operations.
+ * Currently only OpenGL implementation is available, but the design allows
+ * for future integration with other rendering backends (e.g., Vulkan).
  */
 namespace gkit::graphic {
 

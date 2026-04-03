@@ -4,6 +4,9 @@ project(libgkit_graphic LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Export compile commands for IDEs and tooling
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type" FORCE)
 endif()
@@ -41,3 +44,13 @@ target_include_directories(test_app PRIVATE
     ${CMAKE_SOURCE_DIR}
 )
 target_link_libraries(test_app PRIVATE libgkit_graphic glad_gl glfw)
+
+# Create symlink to compile_commands.json in source directory
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+    add_custom_command(TARGET libgkit_graphic POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E create_symlink
+            ${CMAKE_BINARY_DIR}/compile_commands.json
+            ${CMAKE_SOURCE_DIR}/compile_commands.json
+        COMMENT "Creating symlink to compile_commands.json"
+    )
+endif()
