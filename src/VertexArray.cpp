@@ -3,19 +3,19 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "VertexBufferLayout.hpp"
-#include "Renderer.hpp"
+#include <glm/glm.hpp>
 
-VertexArray::VertexArray()
+gkit::graphic::opengl::VertexArray::VertexArray()
 {
 	GLCall(glGenVertexArrays(1, &m_RendererID));
 }
 
-VertexArray::~VertexArray()
+gkit::graphic::opengl::VertexArray::~VertexArray()
 {
 	GLCall(glDeleteVertexArrays(1, &m_RendererID))
 }
 
-void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
+void gkit::graphic::opengl::VertexArray::AddBuffer(const buffer::VertexBuffer& vb, const buffer::VertexBufferLayout& layout)
 {
 	Bind();
 	vb.Bind();
@@ -28,13 +28,13 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 		//Specify the reading rules for the incoming data, the meaning of the arrays (coordinates, textures, etc.)
 		GLCall(glVertexAttribPointer(m_AttribIndex, element.count, element.type,
 			element.normalized, layout.GetStride(), (const void*)offset));
-		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
+		offset += element.count * buffer::VertexBufferElement::GetSizeOfType(element.type);
 		m_AttribIndex++;
 	}
 
 }
 
-void VertexArray::AddInstanceBuffer(const VertexBuffer& vb)
+void gkit::graphic::opengl::VertexArray::AddInstanceBuffer(const buffer::VertexBuffer& vb)
 {
     Bind();
 	vb.Bind();
@@ -57,12 +57,12 @@ void VertexArray::AddInstanceBuffer(const VertexBuffer& vb)
     }
 }
 
-void VertexArray::Bind() const
+void gkit::graphic::opengl::VertexArray::Bind() const
 {
 	GLCall(glBindVertexArray(m_RendererID));
 }
 
-void VertexArray::Unbind() const
+void gkit::graphic::opengl::VertexArray::Unbind() const
 {
 	GLCall(glBindVertexArray(0));
 }

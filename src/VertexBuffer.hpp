@@ -8,31 +8,35 @@
  * A VertexBuffer stores vertex data on the GPU, containing attributes
  * such as position, color, texture coordinates, etc.
  */
-class VertexBuffer
-{
-private:
-	uint32_t m_RendererID;  ///< OpenGL buffer ID
-public:
-	/**
-	 * @brief Construct a vertex buffer
-	 * @param data Pointer to vertex data
-	 * @param size Size of the data in bytes
-	 * @param Dynamic If true, the buffer will be updated frequently (GL_DYNAMIC_DRAW)
-	 */
-	VertexBuffer(const void* data, uint32_t size, bool Dynamic = false);
+namespace gkit::graphic::opengl::buffer {
 
-	/**
-	 * @brief Destructor - deletes the vertex buffer
-	 */
-	~VertexBuffer();
+	class VertexBuffer
+	{
+	private:
+		uint32_t m_RendererID;  ///< OpenGL buffer ID
+	public:
+		/**
+		* @brief Construct a vertex buffer
+		* @param data Pointer to vertex data
+		* @param size Size of the data in bytes
+		* @param Dynamic If true, the buffer will be updated frequently (GL_DYNAMIC_DRAW)
+		*/
+		VertexBuffer(const void* data, uint32_t size, bool Dynamic = false);
 
-	/**
-	 * @brief Bind this vertex buffer to the current OpenGL context
-	 */
-	void Bind() const;
+		/**
+		* @brief Destructor - deletes the vertex buffer
+		*/
+		~VertexBuffer();
 
-	/**
-	 * @brief Unbind this vertex buffer from the current OpenGL context
-	 */
-	void Unbind() const;
-};
+		/**
+		* @brief Bind this vertex buffer to the current OpenGL context
+		*/
+		void Bind() const;
+
+		/**
+		* @brief Unbind this vertex buffer from the current OpenGL context
+		*/
+		void Unbind() const;
+	};
+
+} // namespace gkit::graphic::opengl::buffer

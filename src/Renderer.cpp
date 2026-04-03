@@ -5,12 +5,12 @@
 #include "debug.hpp"
 #include <glad/gl.h>
 
-void Renderer::Clear() const
+void gkit::graphic::Renderer::Clear() const
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+void gkit::graphic::Renderer::Draw(const gkit::graphic::opengl::VertexArray& va, const gkit::graphic::opengl::buffer::IndexBuffer& ib, const gkit::graphic::Shader& shader) const
 {
     shader.Bind();
     va.Bind();
@@ -18,14 +18,14 @@ void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& 
     GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
 
-void Renderer::Draw(const VertexArray& va, const Shader& shader) const
+void gkit::graphic::Renderer::Draw(const gkit::graphic::opengl::VertexArray& va, const gkit::graphic::Shader& shader) const
 {
     shader.Bind();
     va.Bind();
     GLCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 }
 
-void Renderer::DrawInstance(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, uint32_t instanceCount) const
+void gkit::graphic::Renderer::DrawInstance(const gkit::graphic::opengl::VertexArray& va, const gkit::graphic::opengl::buffer::IndexBuffer& ib, const gkit::graphic::Shader& shader, uint32_t instanceCount) const
 {
     shader.Bind();
     va.Bind();

@@ -56,26 +56,26 @@ int main()
 
     {
         // create vertex buffer
-        VertexBuffer vb(vertices, sizeof(vertices));
+        gkit::graphic::opengl::buffer::VertexBuffer vb(vertices, sizeof(vertices));
 
         // create index buffer
-        IndexBuffer ib(indices, 3);
+        gkit::graphic::opengl::buffer::IndexBuffer ib(indices, 3);
 
         // create vertex array
-        VertexArray va;
+        gkit::graphic::opengl::VertexArray va;
 
         // setup buffer layout (3个 float 组成 position)
-        VertexBufferLayout layout;
+        gkit::graphic::opengl::buffer::VertexBufferLayout layout;
         layout.Push<float>(3);
         va.AddBuffer(vb, layout);
 
         // load shader source
-        Shader shader("test/basic.shader");
+        gkit::graphic::Shader shader("test/basic.shader");
         #pragma endregion
 
         #pragma region render
         // create renderer
-        Renderer renderer;
+        gkit::graphic::Renderer renderer;
 
         // render cycle
         while (!glfwWindowShouldClose(window))

@@ -3,7 +3,7 @@
 #include "VertexBuffer.hpp"
 #include <glad/gl.h>
 
-VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool Dynamic)
+gkit::graphic::opengl::buffer::VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool Dynamic)
 {
     GLCall(glGenBuffers(1, &m_RendererID));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
@@ -15,17 +15,17 @@ VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool Dynamic)
     }
 }
 
-VertexBuffer::~VertexBuffer()
+gkit::graphic::opengl::buffer::VertexBuffer::~VertexBuffer()
 {
     GLCall(glDeleteBuffers(1, &m_RendererID));
 }
 
-void VertexBuffer::Bind() const
+void gkit::graphic::opengl::buffer::VertexBuffer::Bind() const
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 }
 
-void VertexBuffer::Unbind() const
+void gkit::graphic::opengl::buffer::VertexBuffer::Unbind() const
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }

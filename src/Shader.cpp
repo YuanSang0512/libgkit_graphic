@@ -7,19 +7,19 @@
 #include <sstream>
 #include <fstream>
 
-Shader::Shader(const std::string& filepath)
+gkit::graphic::Shader::Shader(const std::string& filepath)
 	: m_FilePath(filepath), m_RendererID(0)
 {
     ShaderProgramSource source = ParseShader(filepath);
     m_RendererID = CreateShader(source.vertexShader, source.fragmenShader);
 
 }
-Shader::~Shader()
+gkit::graphic::Shader::~Shader()
 {
     GLCall(glDeleteProgram(m_RendererID));
 }
 
-uint32_t Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+uint32_t gkit::graphic::Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
     uint32_t program = glCreateProgram();
     uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
@@ -34,7 +34,7 @@ uint32_t Shader::CreateShader(const std::string& vertexShader, const std::string
     return program;
 }
 
-ShaderProgramSource Shader::ParseShader(const std::string& filePath)
+gkit::graphic::ShaderProgramSource gkit::graphic::Shader::ParseShader(const std::string& filePath)
 {
     std::cout << filePath << std::endl;
     std::ifstream stream(filePath);
@@ -71,7 +71,7 @@ ShaderProgramSource Shader::ParseShader(const std::string& filePath)
     return { ss[0].str(), ss[1].str() };
 }
 
-uint32_t Shader::CompileShader(uint32_t type, const std::string& source)
+uint32_t gkit::graphic::Shader::CompileShader(uint32_t type, const std::string& source)
 {
     uint32_t id = glCreateShader(type);
     const char* src = source.c_str();
@@ -98,60 +98,60 @@ uint32_t Shader::CompileShader(uint32_t type, const std::string& source)
     return id;
 }
 
-void Shader::Bind() const
+void gkit::graphic::Shader::Bind() const
 {
     GLCall(glUseProgram(m_RendererID));
 }
-void Shader::Unbind() const
+void gkit::graphic::Shader::Unbind() const
 {
     GLCall(glUseProgram(0));
 }
 
 //set uniforms
 
-void Shader::SetUniform1i(const std::string& name, int value)
+void gkit::graphic::Shader::SetUniform1i(const std::string& name, int value)
 {
     GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
-void Shader::SetUniform1f(const std::string& name, float value)
+void gkit::graphic::Shader::SetUniform1f(const std::string& name, float value)
 {
     GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
-void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+void gkit::graphic::Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
     GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
-void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
+void gkit::graphic::Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
 {
     GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
 
-void Shader::SetUniformMat3f(const std::string& name, const glm::mat3& matrix)
+void gkit::graphic::Shader::SetUniformMat3f(const std::string& name, const glm::mat3& matrix)
 {
     GLCall(glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
 
-void Shader::SetUniformVec4f(const std::string& name, const glm::vec4& vector4)
+void gkit::graphic::Shader::SetUniformVec4f(const std::string& name, const glm::vec4& vector4)
 {
     GLCall(glUniform4fv(GetUniformLocation(name), 1, &vector4[0]));
 }
 
-void Shader::SetUniformVec3f(const std::string& name, const glm::vec3& vector3)
+void gkit::graphic::Shader::SetUniformVec3f(const std::string& name, const glm::vec3& vector3)
 {
     GLCall(glUniform3fv(GetUniformLocation(name), 1, &vector3[0]));
 }
 
 
-void Shader::SetUniform1iv(const std::string& name, const int sz, const int* ind)
+void gkit::graphic::Shader::SetUniform1iv(const std::string& name, const int sz, const int* ind)
 {
     GLCall(glUniform1iv(GetUniformLocation(name), sz, ind));
 }
 
 
-int Shader::GetUniformLocation(const std::string& name)
+int gkit::graphic::Shader::GetUniformLocation(const std::string& name)
 {
     if (m_UniformLocationCach.find(name) != m_UniformLocationCach.end())
         return m_UniformLocationCach[name];
