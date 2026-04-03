@@ -3,7 +3,7 @@
 #include "VertexBuffer.hpp"
 #include <glad/gl.h>
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size, bool Dynamic)
+VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool Dynamic)
 {
     GLCall(glGenBuffers(1, &m_RendererID));
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));

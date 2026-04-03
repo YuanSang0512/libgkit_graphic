@@ -51,7 +51,7 @@ void VertexArray::AddInstanceBuffer(const VertexBuffer& vb)
 
     size_t vec4Size = sizeof(glm::vec4);
 
-    for (unsigned int i = 0; i < 4; i++)
+    for (uint32_t i = 0; i < 4; i++)
     {
         glEnableVertexAttribArray(m_AttribIndex);
         glVertexAttribPointer(

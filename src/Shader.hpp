@@ -5,6 +5,8 @@
 #include <glad/gl.h>
 #include <glm/glm.hpp>
 
+#include <cstdint>
+
 struct ShaderProgramSource {
 	std::string vertexShader;
 	std::string fragmenShader;
@@ -13,7 +15,7 @@ struct ShaderProgramSource {
 class Shader
 {
 private:
-	unsigned int m_RendererID;
+	uint32_t m_RendererID;
 	std::string m_FilePath;
 	std::unordered_map<std::string, int> m_UniformLocationCach;
 public:
@@ -34,8 +36,8 @@ public:
 	void SetUniform1iv(const std::string& name, const int sz, const int* ind);
 private:
 	ShaderProgramSource ParseShader(const std::string& filePath);
-	unsigned int CompileShader(unsigned int type, const std::string& source);
-	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
+	uint32_t CompileShader(uint32_t type, const std::string& source);
+	uint32_t CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 	int GetUniformLocation(const std::string& name);
 
 };

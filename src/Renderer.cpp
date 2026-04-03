@@ -32,7 +32,7 @@ void Renderer::Draw(const VertexArray& va, const Shader& shader) const
 /// <param name="ib"></param>
 /// <param name="shader"></param>
 /// <param name="instanceCount">绘制数量</param>
-void Renderer::DrawInstance(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, unsigned int instanceCount) const
+void Renderer::DrawInstance(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, uint32_t instanceCount) const
 {
     shader.Bind();
     va.Bind();

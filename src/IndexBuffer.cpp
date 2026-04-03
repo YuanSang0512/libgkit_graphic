@@ -4,13 +4,12 @@
 #include "Renderer.hpp"
 #include <glad/gl.h>
 
-IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
+IndexBuffer::IndexBuffer(const uint32_t* data, uint32_t count)
     : m_Count(count)
 {
-    ASSERT(sizeof(unsigned int) == sizeof(GLuint));
     GLCall(glGenBuffers(1, &m_RendererID));
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
-    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));
+    GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), data, GL_STATIC_DRAW));
 }
 IndexBuffer::~IndexBuffer()
 {
