@@ -14,6 +14,7 @@ VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool Dynamic)
         GLCall(glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW));
     }
 }
+
 VertexBuffer::~VertexBuffer()
 {
     GLCall(glDeleteBuffers(1, &m_RendererID));

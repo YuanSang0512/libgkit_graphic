@@ -25,13 +25,6 @@ void Renderer::Draw(const VertexArray& va, const Shader& shader) const
     GLCall(glDrawArrays(GL_TRIANGLES, 0, 6));
 }
 
-/// <summary>
-/// 实例化绘制
-/// </summary>
-/// <param name="va"></param>
-/// <param name="ib"></param>
-/// <param name="shader"></param>
-/// <param name="instanceCount">绘制数量</param>
 void Renderer::DrawInstance(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, uint32_t instanceCount) const
 {
     shader.Bind();

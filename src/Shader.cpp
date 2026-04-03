@@ -34,16 +34,12 @@ uint32_t Shader::CreateShader(const std::string& vertexShader, const std::string
     return program;
 }
 
-/// <summary>
-/// 读取/解析 Shader文件
-/// </summary>
-/// <param name="filePath">文件路径</param>
 ShaderProgramSource Shader::ParseShader(const std::string& filePath)
 {
     std::cout << filePath << std::endl;
     std::ifstream stream(filePath);
 
-    //shder文件枚举类型
+    //shader enum type
     enum class ShaderType
     {
         NONE = -1,
@@ -52,7 +48,7 @@ ShaderProgramSource Shader::ParseShader(const std::string& filePath)
     };
 
     std::string line;
-    std::stringstream ss[2];//shader源码字符串流
+    std::stringstream ss[2];//shader string stream
     ShaderType type = ShaderType::NONE;
     while (getline(stream, line))
     {

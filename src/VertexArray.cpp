@@ -15,11 +15,6 @@ VertexArray::~VertexArray()
 	GLCall(glDeleteVertexArrays(1, &m_RendererID))
 }
 
-/// <summary>
-/// 普通顶点缓冲区添加到顶点数组对象中
-/// </summary>
-/// <param name="vb"></param>
-/// <param name="layout"></param>
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
 	Bind();
@@ -29,8 +24,8 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 	for (int i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
-		GLCall(glEnableVertexAttribArray(i));//启动指定索引的顶点属性数组（glVertexAttribPointer）
-		//规定传入数据的读取规则，也就是数组含义（坐标、纹理等）,实际上是将vbo绑定到vao
+		GLCall(glEnableVertexAttribArray(i));
+		//Specify the reading rules for the incoming data, the meaning of the arrays (coordinates, textures, etc.)
 		GLCall(glVertexAttribPointer(m_AttribIndex, element.count, element.type,
 			element.normalized, layout.GetStride(), (const void*)offset));
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
@@ -39,11 +34,6 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
 
 }
 
-/// <summary>
-/// 实例化矩阵缓冲区添加到顶点数组对象中
-/// </summary>
-/// <param name="vbo"></param>
-/// <param name="startLocation"></param>
 void VertexArray::AddInstanceBuffer(const VertexBuffer& vb)
 {
     Bind();
@@ -71,6 +61,7 @@ void VertexArray::Bind() const
 {
 	GLCall(glBindVertexArray(m_RendererID));
 }
+
 void VertexArray::Unbind() const
 {
 	GLCall(glBindVertexArray(0));
