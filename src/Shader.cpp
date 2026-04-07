@@ -1,8 +1,8 @@
 #include "debug.hpp"
-
 #include "Shader.hpp"
-#include "Renderer.hpp"
 
+#include <glad/gl.h>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -12,8 +12,8 @@ gkit::graphic::Shader::Shader(const std::string& filepath)
 {
     ShaderProgramSource source = ParseShader(filepath);
     m_RendererID = CreateShader(source.vertexShader, source.fragmenShader);
-
 }
+
 gkit::graphic::Shader::~Shader()
 {
     GLCall(glDeleteProgram(m_RendererID));
@@ -124,24 +124,24 @@ void gkit::graphic::Shader::SetUniform4f(const std::string& name, float v0, floa
     GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
-void gkit::graphic::Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
+void gkit::graphic::Shader::SetUniformMat4f(const std::string& name, const float* matrix)
 {
-    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+    GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, matrix));
 }
 
-void gkit::graphic::Shader::SetUniformMat3f(const std::string& name, const glm::mat3& matrix)
+void gkit::graphic::Shader::SetUniformMat3f(const std::string& name, const float* matrix)
 {
-    GLCall(glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+    GLCall(glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, matrix));
 }
 
-void gkit::graphic::Shader::SetUniformVec4f(const std::string& name, const glm::vec4& vector4)
+void gkit::graphic::Shader::SetUniformVec4f(const std::string& name, const float* vector4)
 {
-    GLCall(glUniform4fv(GetUniformLocation(name), 1, &vector4[0]));
+    GLCall(glUniform4fv(GetUniformLocation(name), 1, vector4));
 }
 
-void gkit::graphic::Shader::SetUniformVec3f(const std::string& name, const glm::vec3& vector3)
+void gkit::graphic::Shader::SetUniformVec3f(const std::string& name, const float* vector3)
 {
-    GLCall(glUniform3fv(GetUniformLocation(name), 1, &vector3[0]));
+    GLCall(glUniform3fv(GetUniformLocation(name), 1, vector3));
 }
 
 

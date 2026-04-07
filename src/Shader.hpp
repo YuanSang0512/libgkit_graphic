@@ -2,8 +2,6 @@
 
 #include <string>
 #include <unordered_map>
-#include <glad/gl.h>
-#include <glm/glm.hpp>
 
 #include <cstdint>
 
@@ -79,30 +77,30 @@ namespace gkit::graphic{
 		/**
 		* @brief Set a 4-component float vector uniform
 		* @param name Name of the uniform
-		* @param vector4 4-component vector value
+		* @param vector4 Pointer to 4-component float array
 		*/
-		void SetUniformVec4f(const std::string& name, const glm::vec4& vector4);
+		void SetUniformVec4f(const std::string& name, const float* vector4);
 
 		/**
 		* @brief Set a 3-component float vector uniform
 		* @param name Name of the uniform
-		* @param vector3 3-component vector value
+		* @param vector3 Pointer to 3-component float array
 		*/
-		void SetUniformVec3f(const std::string& name, const glm::vec3& vector3);
+		void SetUniformVec3f(const std::string& name, const float* vector3);
 
 		/**
 		* @brief Set a 4x4 float matrix uniform
 		* @param name Name of the uniform
-		* @param matrix 4x4 matrix value
+		* @param matrix Pointer to 16-element float array (column-major)
 		*/
-		void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
+		void SetUniformMat4f(const std::string& name, const float* matrix);
 
 		/**
 		* @brief Set a 3x3 float matrix uniform
 		* @param name Name of the uniform
-		* @param matrix 3x3 matrix value
+		* @param matrix Pointer to 9-element float array (column-major)
 		*/
-		void SetUniformMat3f(const std::string& name, const glm::mat3& matrix);
+		void SetUniformMat3f(const std::string& name, const float* matrix);
 
 		/**
 		* @brief Set an array of integer uniform variables
