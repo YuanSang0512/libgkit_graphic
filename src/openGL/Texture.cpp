@@ -12,13 +12,13 @@ gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType typ
 {
 	if (m_Type == TextureType::TEXTURE_2D)
 	{
-		stbi_set_flip_vertically_on_load(1);//把图片上下翻转
+		stbi_set_flip_vertically_on_load(1);
 		m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
 
 		GLCall(glGenTextures(1, &m_RendererID));
 		GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 
-		#pragma region 不知所云的设置
+		#pragma region UnKnown
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -27,9 +27,8 @@ gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType typ
 
 		if (m_LocalBuffer)
 		{
-			//传数据到GPU
 			GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer));
-			glGenerateMipmap(GL_TEXTURE_2D);//自动生成多级渐远纹理
+			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 
 		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
@@ -38,12 +37,12 @@ gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType typ
 	}
 	else if (m_Type == TextureType::TEXTURE_CUBE_MAP)
 	{
-		stbi_set_flip_vertically_on_load(0);//关闭图片上下翻转
+		stbi_set_flip_vertically_on_load(0);
 
 		GLCall(glGenTextures(1, &m_RendererID));
 		GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, m_RendererID));
 
-		#pragma region 不知所云的设置
+		#pragma region UnKnown
 		GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		GLCall(glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
