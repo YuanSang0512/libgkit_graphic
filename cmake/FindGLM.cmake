@@ -1,6 +1,6 @@
 # ============================================================================
-# 文件位置: /cmake/FindGLM.cmake
-# 职责: 查找GLM库的路径，创建IMPORTED目标
+# File location: /cmake/FindGLM.cmake
+# Purpose: Find GLM library path and create IMPORTED target
 # ============================================================================
 find_path(GLM_INCLUDE_DIR
     NAMES glm/glm.hpp
