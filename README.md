@@ -63,6 +63,7 @@ renderer.DrawInstance(vertexArray, indexBuffer, shader, instanceCount);
 > **Note for merging into main library**: 
 > - The `src` module currently depends on GLM and stb_image which are located in `test/extern/`. When merging into the main libgkit repository, these dependencies should be properly integrated as submodule dependencies or moved to a suitable location in the main library.
 > - The debug system (`src/debug/`) is currently using a temporary implementation and should be replaced with the main library's logging/debug infrastructure when merging.
+> - `SCR_WIDTH` and `SCR_HEIGHT` used in FrameBuffer,RenderBuffer,Texture are currently hardcoded in config.hpp. Should be dynamically obtained from window size in the future.
 
 ## TODO (Before merging into main library)
 
