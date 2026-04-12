@@ -26,14 +26,12 @@ void gkit::graphic::opengl::buffer::FrameBuffer::AttachColorTexture(const gkit::
 {
 	Bind();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + slot, GL_TEXTURE_2D, texture.GetRenderID(), 0);
-	std::cout<<"attach texture"<<std::endl;
 }
 
 void gkit::graphic::opengl::buffer::FrameBuffer::DetachColorTexture(int slot)
 {
 	Bind();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + slot, GL_TEXTURE_2D, 0, 0);
-	std::cout<<"detach texture"<<std::endl;
 }
 
 void gkit::graphic::opengl::buffer::FrameBuffer::AttachDepthStencil(const RenderBuffer& rbo) {

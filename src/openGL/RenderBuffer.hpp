@@ -25,11 +25,6 @@ namespace gkit::graphic::opengl::buffer{
 		~RenderBuffer();
 
 		/**
-		* @brief Check if the renderbuffer is properly configured
-		*/
-		void Check();
-
-		/**
 		* @brief Bind this renderbuffer to the current OpenGL context
 		*/
 		void Bind() const;

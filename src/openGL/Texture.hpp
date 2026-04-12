@@ -64,7 +64,7 @@ namespace gkit::graphic::opengl{
 		/**
 		* @brief Cube map face file names
 		*/
-		std::vector<std::string> faces
+		inline static const std::vector<std::string> faces = 
 		{
 			"right.jpg",
 			"left.jpg",
