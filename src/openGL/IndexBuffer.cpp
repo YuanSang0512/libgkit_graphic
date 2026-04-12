@@ -1,7 +1,7 @@
-#include <glad/gl.h>
-
 #include "debug/debug.hpp"
 #include "IndexBuffer.hpp"
+
+#include <glad/gl.h>
 
 gkit::graphic::opengl::buffer::IndexBuffer::IndexBuffer(const uint32_t* data, uint32_t count)
     : m_Count(count)

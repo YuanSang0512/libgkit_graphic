@@ -1,10 +1,10 @@
-#include <iostream>
+#include "Texture.hpp"
+#include "debug/debug.hpp"
 
 #include <stb_image.h>
 #include <glad/gl.h>
 
-#include "Texture.hpp"
-#include "debug/debug.hpp"
+#include <iostream>
 
 gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType type)
 	:m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr), 

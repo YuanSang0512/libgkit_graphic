@@ -1,10 +1,10 @@
-#include <glad/gl.h>
-
 #include "openGL/VertexArray.hpp"
 #include "openGL/IndexBuffer.hpp"
 #include "debug/debug.hpp"
 #include "Renderer.hpp"
 #include "Shader.hpp"
+
+#include <glad/gl.h>
 
 void gkit::graphic::Renderer::Clear() const
 {

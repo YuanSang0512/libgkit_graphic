@@ -1,12 +1,11 @@
 #pragma once
 
-#include <vector>
+#include "debug/debug.hpp"
 
 #include <glad/gl.h>
 #include <glm/glm.hpp>
 
-#include "debug/debug.hpp"
-
+#include <vector>
 #include <cstdint>
 
 /**

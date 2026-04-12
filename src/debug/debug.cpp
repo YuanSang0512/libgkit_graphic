@@ -1,8 +1,8 @@
-#include <iostream>
+#include "debug.hpp"
 
 #include <glad/gl.h>
 
-#include "debug.hpp"
+#include <iostream>
 
 void GLClearError()
 {

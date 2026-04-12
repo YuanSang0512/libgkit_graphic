@@ -1,10 +1,10 @@
-#include <iostream>
-
-#include <glad/gl.h>
-
 #include "FrameBuffer.hpp"
 #include "config.hpp"
 #include "debug/debug.hpp"
+
+#include <glad/gl.h>
+
+#include <iostream>
 
 gkit::graphic::opengl::buffer::FrameBuffer::FrameBuffer()
 {

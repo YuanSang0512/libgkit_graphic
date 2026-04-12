@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cstdint>
-
 #include "openGL/IndexBuffer.hpp"
 #include "openGL/VertexArray.hpp"
 #include "core/Shader.hpp"
+
+#include <cstdint>
 
 /**
  * @brief Renderer class providing public rendering interface

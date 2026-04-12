@@ -1,9 +1,9 @@
-#include <glm/glm.hpp>
-
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "VertexBufferLayout.hpp"
 #include "debug/debug.hpp"
+
+#include <glm/glm.hpp>
 
 gkit::graphic::opengl::VertexArray::VertexArray()
 {

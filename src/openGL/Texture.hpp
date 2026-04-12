@@ -1,9 +1,9 @@
 #pragma once
 
+#include "config.hpp"
+
 #include <vector>
 #include <string>
-
-#include "config.hpp"
 
 /**
  * @brief Texture wrapper for OpenGL texture objects

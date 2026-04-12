@@ -1,8 +1,8 @@
-#include <glad/gl.h>
-
 #include "RenderBuffer.hpp"
 #include "debug/debug.hpp"
 #include "config.hpp"
+
+#include <glad/gl.h>
 
 gkit::graphic::opengl::buffer::RenderBuffer::RenderBuffer()
 {
@@ -14,7 +14,7 @@ gkit::graphic::opengl::buffer::RenderBuffer::RenderBuffer()
 
 gkit::graphic::opengl::buffer::RenderBuffer::~RenderBuffer()
 {
-	GLCall(glDeleteRenderbuffers(1, &m_RendererID))
+	GLCall(glDeleteRenderbuffers(1, &m_RendererID));
 }
 
 void gkit::graphic::opengl::buffer::RenderBuffer::Bind() const

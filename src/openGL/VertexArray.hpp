@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdint>
-
 #include "VertexBufferLayout.hpp"
 #include "VertexBuffer.hpp"
+
+#include <cstdint>
 
 /**
  * @brief Vertex array wrapper for OpenGL vertex array objects (VAO)

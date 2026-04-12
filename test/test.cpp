@@ -1,7 +1,3 @@
-#include <iostream>
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-
 #include "openGL/VertexArray.hpp"
 #include "openGL/VertexBuffer.hpp"
 #include "openGL/IndexBuffer.hpp"
@@ -13,6 +9,11 @@
 
 #include "core/Shader.hpp"
 #include "core/Renderer.hpp"
+
+#include <glad/gl.h>
+#include <GLFW/glfw3.h>
+
+#include <iostream>
 
 int main()
 {

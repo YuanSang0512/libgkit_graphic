@@ -1,7 +1,7 @@
-#include <glad/gl.h>
-
 #include "VertexBuffer.hpp"
 #include "debug/debug.hpp"
+
+#include <glad/gl.h>
 
 gkit::graphic::opengl::buffer::VertexBuffer::VertexBuffer(const void* data, uint32_t size, bool Dynamic)
 {

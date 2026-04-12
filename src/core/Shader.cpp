@@ -1,12 +1,12 @@
-#include <iostream>
-#include <sstream>
-#include <fstream>
+#include "debug/debug.hpp"
+#include "Shader.hpp"
 
 #include <glad/gl.h>
 #include <glm/glm.hpp>
 
-#include "debug/debug.hpp"
-#include "Shader.hpp"
+#include <sstream>
+#include <fstream>
+#include <iostream>
 
 gkit::graphic::Shader::Shader(const std::string& filepath)
 	: m_FilePath(filepath), m_RendererID(0)
