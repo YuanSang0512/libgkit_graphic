@@ -48,6 +48,7 @@ void gkit::graphic::opengl::buffer::FrameBuffer::DetachDepthStencil() {
 
 void gkit::graphic::opengl::buffer::FrameBuffer::Check()
 {
+	Bind();
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		std::cout << "==================================================" << std::endl;
@@ -58,7 +59,6 @@ void gkit::graphic::opengl::buffer::FrameBuffer::Check()
 	{
 		std::cout << "FRAMEBUFFER:: Framebuffer is complete!" << std::endl;
 	}
-   this->Unbind();
 }
 
 void gkit::graphic::opengl::buffer::FrameBuffer::SetViewport(int x, int y, int width, int height)
