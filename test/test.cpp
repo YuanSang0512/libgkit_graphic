@@ -102,9 +102,11 @@ int main()
         #pragma endregion
 
         #pragma region framebuffer
-        gkit::graphic::opengl::buffer::FrameBuffer fbo;
+        gkit::graphic::opengl::buffer::FrameBuffer fbo(gkit::graphic::opengl::SCR_WIDTH, gkit::graphic::opengl::SCR_HEIGHT);
         gkit::graphic::opengl::Texture fboTexture(" ", gkit::graphic::opengl::TextureType::TEXTURE_FRAMEBUFFER);
-        gkit::graphic::opengl::buffer::RenderBuffer rbo;
+        gkit::graphic::opengl::buffer::RenderBuffer rbo(gkit::graphic::opengl::SCR_WIDTH, gkit::graphic::opengl::SCR_HEIGHT);
+        fbo.AttachColorTexture(fboTexture, 0);
+        fbo.AttachDepthStencil(rbo);
         fbo.Check();
         #pragma endregion
 
@@ -121,8 +123,8 @@ int main()
             if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
                 glfwSetWindowShouldClose(window, true);
 
-            renderer.Clear();
             fbo.Bind();
+            renderer.Clear();
             // 1. Render to framebuffer
             picShader.Bind();
             mainTexture.Bind(0);
@@ -130,6 +132,7 @@ int main()
 
             // 2. Render to screen (post-processing)
             fbo.Unbind();
+            renderer.Clear();
             postShader.Bind();
             fboTexture.Bind(0);
             postShader.SetUniform1i("screenTexture", 0);

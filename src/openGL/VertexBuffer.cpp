@@ -17,7 +17,11 @@ gkit::graphic::opengl::buffer::VertexBuffer::VertexBuffer(const void* data, uint
 
 gkit::graphic::opengl::buffer::VertexBuffer::~VertexBuffer()
 {
-    GLCall(glDeleteBuffers(1, &m_RendererID));
+    if(m_RendererID != 0)
+    {
+        GLCall(glDeleteBuffers(1, &m_RendererID));
+        m_RendererID = 0;
+    }
 }
 
 void gkit::graphic::opengl::buffer::VertexBuffer::Bind() const

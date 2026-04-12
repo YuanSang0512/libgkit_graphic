@@ -17,7 +17,7 @@ namespace gkit::graphic::opengl::buffer{
 		/**
 		* @brief Construct a renderbuffer
 		*/
-		RenderBuffer();
+		RenderBuffer(int width, int height);
 
 		/**
 		* @brief Destructor - deletes the renderbuffer
@@ -38,6 +38,8 @@ namespace gkit::graphic::opengl::buffer{
 		* @brief Unbind this renderbuffer from the current OpenGL context
 		*/
 		void Unbind() const;
+
+		int GetRendererID() const {return m_RendererID; }
 	};
 
 }

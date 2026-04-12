@@ -30,8 +30,6 @@ gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType typ
 			GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer));
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
-
-		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 		if (m_LocalBuffer)
 			stbi_image_free(m_LocalBuffer);
 	}
@@ -67,7 +65,6 @@ gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType typ
 				stbi_image_free(m_LocalBuffer);
 			}
 		}
-		GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 	}
 	else if (m_Type == TextureType::TEXTURE_FRAMEBUFFER)
 	{
@@ -76,13 +73,18 @@ gkit::graphic::opengl::Texture::Texture(const std::string& path, TextureType typ
 		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_RendererID, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
+	Unbind();
 }
 
 gkit::graphic::opengl::Texture::~Texture()
 {
-	GLCall(glDeleteTextures(1, &m_RendererID));
+    if (m_RendererID != 0) {
+        GLCall(glDeleteTextures(1, &m_RendererID));
+        m_RendererID = 0;
+    }
 }
 
 void gkit::graphic::opengl::Texture::Bind(unsigned int slot) const
@@ -105,12 +107,8 @@ void gkit::graphic::opengl::Texture::Unbind() const
 	{
 		GLCall(glBindTexture(GL_TEXTURE_CUBE_MAP, 0));
 	}
-	else if (m_Type == TextureType::TEXTURE_2D)
+	else if (m_Type == TextureType::TEXTURE_2D || m_Type == TextureType::TEXTURE_FRAMEBUFFER)
 	{
 		GLCall(glBindTexture(GL_TEXTURE_2D, 0));
-	}
-	else if (m_Type == TextureType::TEXTURE_FRAMEBUFFER)
-	{
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 }

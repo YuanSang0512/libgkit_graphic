@@ -12,7 +12,11 @@ gkit::graphic::opengl::VertexArray::VertexArray()
 
 gkit::graphic::opengl::VertexArray::~VertexArray()
 {
-	GLCall(glDeleteVertexArrays(1, &m_RendererID))
+	if(m_RendererID != 0)
+	{
+		GLCall(glDeleteVertexArrays(1, &m_RendererID))
+		m_RendererID = 0;
+	}
 }
 
 void gkit::graphic::opengl::VertexArray::AddBuffer(const buffer::VertexBuffer& vb, const buffer::VertexBufferLayout& layout)

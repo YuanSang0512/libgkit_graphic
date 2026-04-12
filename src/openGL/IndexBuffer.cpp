@@ -12,7 +12,11 @@ gkit::graphic::opengl::buffer::IndexBuffer::IndexBuffer(const uint32_t* data, ui
 }
 gkit::graphic::opengl::buffer::IndexBuffer::~IndexBuffer()
 {
-    GLCall(glDeleteBuffers(1, &m_RendererID));
+    if(m_RendererID != 0)
+    {
+        GLCall(glDeleteBuffers(1, &m_RendererID));
+        m_RendererID = 0;
+    }
 }
 
 void gkit::graphic::opengl::buffer::IndexBuffer::Bind() const

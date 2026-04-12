@@ -58,6 +58,8 @@ namespace gkit::graphic::opengl{
 		*/
 		inline int GetHeight() const { return m_Height; }
 
+		inline int GetRenderID() const {return m_RendererID; }
+
 	private:
 		/**
 		* @brief Cube map face file names
