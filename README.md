@@ -18,8 +18,9 @@ src/
 │   ├── VertexBufferLayout.hpp
 │   ├── Texture.hpp
 │   ├── FrameBuffer.hpp
-│   └── RenderBuffer.hpp
-└── debug/          # Debug utilities (gkit::graphic::debug)
+│   ├── RenderBuffer.hpp
+│   └── config.hpp      # Configuration (texture types, screen size)
+└── debug/          # Debug utilities (GLCall macro, error logging)
 ```
 
 ## Drawing Interface
@@ -53,17 +54,16 @@ renderer.DrawInstance(vertexArray, indexBuffer, shader, instanceCount);
 
 ## Dependencies
 
-### Current Temporary Dependencies (in test/extern/)
+### Current temporary Dependencies (in test/extern/)
 
-- **GLM** - Mathematics library (vectors, matrices, transforms)
+- **GLM** - Mathematics library 
 - **stb_image** - Image loading for textures
-- **GLFW** - Window creation and input handling (test only)
-- **glad** - OpenGL function loader
+- **GLFW** - Window creation and input handling 
 
 > **Note for merging into main library**: 
 > - The `src` module currently depends on GLM and stb_image which are located in `test/extern/`. When merging into the main libgkit repository, these dependencies should be properly integrated as submodule dependencies or moved to a suitable location in the main library.
 > - The debug system (`src/debug/`) is currently using a temporary implementation and should be replaced with the main library's logging/debug infrastructure when merging.
-> - `SCR_WIDTH` and `SCR_HEIGHT` used in FrameBuffer,RenderBuffer,Texture are currently hardcoded in config.hpp. Should be dynamically obtained from window size in the future.
+> - `SCR_WIDTH` and `SCR_HEIGHT` used in FrameBuffer, RenderBuffer, Texture are currently hardcoded in config.hpp. Should be dynamically obtained from window size in the future.
 
 ## TODO (Before merging into main library)
 
@@ -71,6 +71,7 @@ renderer.DrawInstance(vertexArray, indexBuffer, shader, instanceCount);
 - [ ] Remove temporary debug system (`src/debug/`)
 - [ ] Remove test folder
 - [ ] Remove temporary shader file parsing and texture loading (replace with main library's file I/O, adapt resource reading format, further encapsulate rendering interfaces)
+- [ ] Add RAII-based resource management for automatic Bind/Unbind handling
 
 ## Build Requirements
 

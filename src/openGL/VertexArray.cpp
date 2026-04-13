@@ -19,7 +19,7 @@ gkit::graphic::opengl::VertexArray::~VertexArray()
 	}
 }
 
-void gkit::graphic::opengl::VertexArray::AddBuffer(const buffer::VertexBuffer& vb, const buffer::VertexBufferLayout& layout)
+auto gkit::graphic::opengl::VertexArray::AddBuffer(const buffer::VertexBuffer& vb, const buffer::VertexBufferLayout& layout) -> void
 {
 	Bind();
 	vb.Bind();
@@ -38,7 +38,7 @@ void gkit::graphic::opengl::VertexArray::AddBuffer(const buffer::VertexBuffer& v
 
 }
 
-void gkit::graphic::opengl::VertexArray::AddInstanceBuffer(const buffer::VertexBuffer& vb)
+auto gkit::graphic::opengl::VertexArray::AddInstanceBuffer(const buffer::VertexBuffer& vb) -> void
 {
     Bind();
 	vb.Bind();
@@ -61,12 +61,12 @@ void gkit::graphic::opengl::VertexArray::AddInstanceBuffer(const buffer::VertexB
     }
 }
 
-void gkit::graphic::opengl::VertexArray::Bind() const
+auto gkit::graphic::opengl::VertexArray::Bind() const -> void
 {
 	GLCall(glBindVertexArray(m_RendererID));
 }
 
-void gkit::graphic::opengl::VertexArray::Unbind() const
+auto gkit::graphic::opengl::VertexArray::Unbind() const -> void
 {
 	GLCall(glBindVertexArray(0));
 }

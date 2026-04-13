@@ -72,13 +72,13 @@ namespace gkit::graphic::opengl::buffer {
 		* @brief Get all elements in this layout
 		* @return Vector of vertex buffer elements
 		*/
-		inline const std::vector<VertexBufferElement> GetElements() const { return m_Elements; }
+		inline auto GetElements() const -> const std::vector<VertexBufferElement> { return m_Elements; }
 
 		/**
 		* @brief Get the stride (bytes between vertices)
 		* @return Stride in bytes
 		*/
-		inline uint32_t GetStride() const { return m_Stride; }
+		inline auto GetStride() const -> uint32_t { return m_Stride; }
 	};
 
 	// Template specialization for float

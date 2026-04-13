@@ -31,23 +31,23 @@ namespace gkit::graphic::opengl {
 		* @param vb Vertex buffer to add
 		* @param layout Layout defining the vertex attributes
 		*/
-		void AddBuffer(const buffer::VertexBuffer& vb, const buffer::VertexBufferLayout& layout);
+		auto AddBuffer(const buffer::VertexBuffer& vb, const buffer::VertexBufferLayout& layout) -> void;
 
 		/**
 		* @brief Add an instance buffer for instanced rendering
 		* @param vb Vertex buffer containing instance data
 		*/
-		void AddInstanceBuffer(const buffer::VertexBuffer& vb);
+		auto AddInstanceBuffer(const buffer::VertexBuffer& vb) -> void;
 
 		/**
 		* @brief Bind this vertex array to the current OpenGL context
 		*/
-		void Bind() const;
+		auto Bind() const -> void;
 
 		/**
 		* @brief Unbind this vertex array from the current OpenGL context
 		*/
-		void Unbind() const;
+		auto Unbind() const -> void;
 
 	private:
 		uint32_t m_RendererID;      	///< OpenGL vertex array ID

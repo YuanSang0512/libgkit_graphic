@@ -19,12 +19,12 @@ gkit::graphic::opengl::buffer::IndexBuffer::~IndexBuffer()
     }
 }
 
-void gkit::graphic::opengl::buffer::IndexBuffer::Bind() const
+auto gkit::graphic::opengl::buffer::IndexBuffer::Bind() const -> void
 {
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
 }
 
-void gkit::graphic::opengl::buffer::IndexBuffer::Unbind() const
+auto gkit::graphic::opengl::buffer::IndexBuffer::Unbind() const -> void
 {
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }

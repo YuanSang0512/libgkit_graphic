@@ -24,12 +24,12 @@ gkit::graphic::opengl::buffer::VertexBuffer::~VertexBuffer()
     }
 }
 
-void gkit::graphic::opengl::buffer::VertexBuffer::Bind() const
+auto gkit::graphic::opengl::buffer::VertexBuffer::Bind() const -> void
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 }
 
-void gkit::graphic::opengl::buffer::VertexBuffer::Unbind() const
+auto gkit::graphic::opengl::buffer::VertexBuffer::Unbind() const -> void
 {
     GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }

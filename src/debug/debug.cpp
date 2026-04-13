@@ -4,12 +4,12 @@
 
 #include <iostream>
 
-void GLClearError()
+auto GLClearError() -> void
 {
     while (glGetError() != GL_NO_ERROR);
 }
 
-bool GLLogCall(const char* function, const char* file, int line)
+auto GLLogCall(const char* function, const char* file, int line) -> bool
 {
     while (GLenum error = glGetError())
     {

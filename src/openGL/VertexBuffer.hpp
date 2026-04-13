@@ -31,12 +31,12 @@ namespace gkit::graphic::opengl::buffer {
 		/**
 		* @brief Bind this vertex buffer to the current OpenGL context
 		*/
-		void Bind() const;
+		auto Bind() const -> void;
 
 		/**
 		* @brief Unbind this vertex buffer from the current OpenGL context
 		*/
-		void Unbind() const;
+		auto Unbind() const -> void;
 	};
 
 } // namespace gkit::graphic::opengl::buffer
