@@ -1,13 +1,19 @@
-#include <iostream>
+#include "openGL/VertexArray.hpp"
+#include "openGL/VertexBuffer.hpp"
+#include "openGL/IndexBuffer.hpp"
+#include "openGL/VertexBufferLayout.hpp"
+#include "openGl/RenderBuffer.hpp"
+#include "openGL/FrameBuffer.hpp"
+#include "openGL/Texture.hpp"
+#include "openGL/config.hpp"
+
+#include "core/Shader.hpp"
+#include "core/Renderer.hpp"
+
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
-#include "src/VertexArray.hpp"
-#include "src/VertexBuffer.hpp"
-#include "src/IndexBuffer.hpp"
-#include "src/VertexBufferLayout.hpp"
-#include "src/Shader.hpp"
-#include "src/Renderer.hpp"
+#include <iostream>
 
 int main()
 {
@@ -21,11 +27,11 @@ int main()
 
     // config OpenGL context (Core Profile)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // build window
-    GLFWwindow* window = glfwCreateWindow(1440, 720, "Test Window", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(gkit::graphic::opengl::SCR_WIDTH, gkit::graphic::opengl::SCR_HEIGHT, "Test Window", nullptr, nullptr);
 
     // setup current context
     glfwMakeContextCurrent(window);
@@ -42,39 +48,69 @@ int main()
     #pragma endregion
 
     #pragma region triangle
-    // vertex data
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+    // Triangle vertex data
+    float picVertices[] = {
+        // positions        // tex coords
+        -0.5f, -0.5f, 0.0f,  0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f,  1.0f, 0.0f,
+        0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f,  0.0f, 1.0f
     };
 
     // index data
-    unsigned int indices[] = {
-        0, 1, 2
-    };
+    unsigned int picIndices[] = { 0, 1, 2, 2, 3, 0 };
 
     {
-        // create vertex buffer
-        gkit::graphic::opengl::buffer::VertexBuffer vb(vertices, sizeof(vertices));
+        gkit::graphic::opengl::VertexArray picVAO;
+        gkit::graphic::opengl::buffer::VertexBuffer picVBO(picVertices, sizeof(picVertices));
+        gkit::graphic::opengl::buffer::IndexBuffer picIBO(picIndices, 6);
 
-        // create index buffer
-        gkit::graphic::opengl::buffer::IndexBuffer ib(indices, 3);
-
-        // create vertex array
-        gkit::graphic::opengl::VertexArray va;
-
-        // setup buffer layout (3个 float 组成 position)
-        gkit::graphic::opengl::buffer::VertexBufferLayout layout;
-        layout.Push<float>(3);
-        va.AddBuffer(vb, layout);
+        gkit::graphic::opengl::buffer::VertexBufferLayout picLayout;
+        picLayout.Push<float>(3);
+        picLayout.Push<float>(2);
+        picVAO.AddBuffer(picVBO, picLayout);
 
         // load shader source
-        gkit::graphic::Shader shader("test/basic.shader");
+        gkit::graphic::Shader picShader("test/texture.shader");
+        gkit::graphic::opengl::Texture mainTexture("test/container2.png", gkit::graphic::opengl::TextureType::TEXTURE_2D);
+
+        #pragma endregion
+
+        #pragma region quad
+        // Full-screen quad vertex data (post-processing)
+        float quadVertices[] = {
+            // positions        // tex coords
+            -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+            1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+            1.0f,  1.0f, 0.0f,  1.0f, 1.0f,
+            -1.0f,  1.0f, 0.0f,  0.0f, 1.0f
+        };
+
+        unsigned int quadIndices[] = { 0, 1, 2, 2, 3, 0 };
+
+        gkit::graphic::opengl::VertexArray quadVAO;
+        gkit::graphic::opengl::buffer::VertexBuffer quadVB(quadVertices, sizeof(quadVertices));
+        gkit::graphic::opengl::buffer::IndexBuffer quadIB(quadIndices, 6);
+
+        gkit::graphic::opengl::buffer::VertexBufferLayout quadLayout;
+        quadLayout.Push<float>(3);
+        quadLayout.Push<float>(2);
+        quadVAO.AddBuffer(quadVB, quadLayout);
+
+        // load post-processing shader
+        gkit::graphic::Shader postShader("test/post_process.shader");
+        #pragma endregion
+
+        #pragma region framebuffer
+        gkit::graphic::opengl::buffer::FrameBuffer fbo(gkit::graphic::opengl::SCR_WIDTH, gkit::graphic::opengl::SCR_HEIGHT);
+        gkit::graphic::opengl::Texture fboTexture(" ", gkit::graphic::opengl::TextureType::TEXTURE_FRAMEBUFFER);
+        gkit::graphic::opengl::buffer::RenderBuffer rbo(gkit::graphic::opengl::SCR_WIDTH, gkit::graphic::opengl::SCR_HEIGHT);
+        fbo.AttachColorTexture(fboTexture, 0);
+        fbo.AttachDepthStencil(rbo);
+        fbo.Check();
         #pragma endregion
 
         #pragma region render
-        // create renderer
         gkit::graphic::Renderer renderer;
 
         // render cycle
@@ -87,10 +123,20 @@ int main()
             if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
                 glfwSetWindowShouldClose(window, true);
 
-            // render core
+            fbo.Bind();
             renderer.Clear();
-            shader.Bind();
-            renderer.Draw(va, ib, shader);
+            // 1. Render to framebuffer
+            picShader.Bind();
+            mainTexture.Bind(0);
+            renderer.Draw(picVAO, picIBO, picShader);
+
+            // 2. Render to screen (post-processing)
+            fbo.Unbind();
+            renderer.Clear();
+            postShader.Bind();
+            fboTexture.Bind(0);
+            postShader.SetUniform1i("screenTexture", 0);
+            renderer.Draw(quadVAO, quadIB, postShader);
 
             // swap buffer
             glfwSwapBuffers(window);

@@ -1,10 +1,11 @@
-# Third party dependencies
-
-# GLAD - OpenGL Loader
 add_subdirectory(glad/cmake)
 
-# GLFW
-add_subdirectory(glfw)
+glad_add_library(glad_gl STATIC
+    API "gl:core=4.6"
+    REPRODUCIBLE
+    LOCATION "${CMAKE_BINARY_DIR}/glad"
+)
 
-# GLM - OpenGL Mathematics (header-only library)
-# include_directories(${CMAKE_SOURCE_DIR}/third_party/glm)
+target_include_directories(glad_gl INTERFACE
+    ${CMAKE_BINARY_DIR}/glad/include
+)
