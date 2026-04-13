@@ -10,7 +10,6 @@ gkit::graphic::opengl::buffer::FrameBuffer::FrameBuffer(int width, int height)
 	: fb_width(width), fb_height(height)
 {
 	GLCall(glGenFramebuffers(1, &m_RendererID));
-	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID));
 }
 
 gkit::graphic::opengl::buffer::FrameBuffer::~FrameBuffer()
@@ -79,8 +78,6 @@ auto gkit::graphic::opengl::buffer::FrameBuffer::SetViewport() -> void
 auto gkit::graphic::opengl::buffer::FrameBuffer::Bind() const -> void
 {
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID));
-	GLCall(glEnable(GL_DEPTH_TEST));
-	GLCall(glViewport(leftX, bottomY, fb_width, fb_height));
 }
 
 auto gkit::graphic::opengl::buffer::FrameBuffer::Unbind() const -> void

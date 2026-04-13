@@ -16,6 +16,19 @@ namespace gkit::graphic::opengl{
 		TEXTURE_CUBE_MAP,
 		TEXTURE_FRAMEBUFFER
 	};
-	
+}
+
+namespace gkit::graphic::opengl::window {
+
+	/// <summary>
+	/// Set viewport with custom position and size
+	/// </summary>
+	auto SetViewport(int x, int y, int width, int height) -> void;
+
+	/// <summary>
+	/// Set viewport with custom size (origin at 0, 0)
+	/// </summary>
+	auto SetViewport(int width, int height) -> void;
+
 }
 #endif

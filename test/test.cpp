@@ -112,6 +112,10 @@ int main()
 
         #pragma region render
         gkit::graphic::Renderer renderer;
+        
+        //
+        int screenWidth = gkit::graphic::opengl::SCR_WIDTH;
+        int screenHeight = gkit::graphic::opengl::SCR_HEIGHT;
 
         // render cycle
         while (!glfwWindowShouldClose(window))
@@ -124,7 +128,10 @@ int main()
                 glfwSetWindowShouldClose(window, true);
 
             fbo.Bind();
+            fbo.SetViewport(0, 0, screenWidth/2, screenHeight/2);
+            glEnable(GL_DEPTH_TEST);
             renderer.Clear();
+
             // 1. Render to framebuffer
             picShader.Bind();
             mainTexture.Bind(0);
@@ -132,7 +139,10 @@ int main()
 
             // 2. Render to screen (post-processing)
             fbo.Unbind();
+            gkit::graphic::opengl::window::SetViewport(0, 0, screenWidth, screenHeight);
+            glDisable(GL_DEPTH_TEST);
             renderer.Clear();
+
             postShader.Bind();
             fboTexture.Bind(0);
             postShader.SetUniform1i("screenTexture", 0);
