@@ -3,6 +3,7 @@
 #include "openGL/IndexBuffer.hpp"
 #include "openGL/VertexArray.hpp"
 #include "core/Shader.hpp"
+#include "openGL/StateManager.hpp"
 
 #include <cstdint>
 
@@ -10,14 +11,22 @@
  * @brief Renderer class providing public rendering interface
  *
  * The Renderer provides a unified interface for rendering operations.
- * Currently only OpenGL implementation is available, but the design allows
- * for future integration with other rendering backends (e.g., Vulkan).
+ * Uses singleton pattern for global access.
  */
 namespace gkit::graphic {
 
 	class Renderer
 	{
 	public:
+		// Delete copy/move
+		Renderer(const Renderer&) = delete;
+		Renderer& operator=(const Renderer&) = delete;
+		Renderer(Renderer&&) = delete;
+		Renderer& operator=(Renderer&&) = delete;
+
+		/// @brief Get singleton instance
+		static auto Get() -> Renderer&;
+
 		/**
 		* @brief Clear the current framebuffer
 		*
@@ -48,6 +57,12 @@ namespace gkit::graphic {
 		* @param instanceCount Number of instances to draw
 		*/
 		auto DrawInstance(const gkit::graphic::opengl::VertexArray& va, const gkit::graphic::opengl::buffer::IndexBuffer& ib, const gkit::graphic::Shader& shader, uint32_t instanceCount) const -> void;
+
+		/// @brief Get state manager reference
+		[[nodiscard]] auto GetStateManager() -> opengl::StateManager&;
+
+	private:
+		Renderer() = default;
 	};
 
 } // namespace gkit::graphic

@@ -1,14 +1,26 @@
 #include "openGL/VertexArray.hpp"
 #include "openGL/IndexBuffer.hpp"
+#include "openGL/StateManager.hpp"
 #include "debug/debug.hpp"
 #include "Renderer.hpp"
 #include "Shader.hpp"
 
 #include <glad/gl.h>
 
+auto gkit::graphic::Renderer::Get() -> Renderer&
+{
+	static Renderer instance;
+	return instance;
+}
+
+auto gkit::graphic::Renderer::GetStateManager() -> opengl::StateManager&
+{
+	return opengl::StateManager::Get();
+}
+
 auto gkit::graphic::Renderer::Clear() const -> void
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 auto gkit::graphic::Renderer::Draw(const gkit::graphic::opengl::VertexArray& va, const gkit::graphic::opengl::buffer::IndexBuffer& ib, const gkit::graphic::Shader& shader) const -> void

@@ -58,6 +58,7 @@ auto gkit::graphic::opengl::buffer::FrameBuffer::Check() -> void
 	{
 		std::cout << "FRAMEBUFFER:: Framebuffer is complete!" << std::endl;
 	}
+	Unbind();
 }
 
 auto gkit::graphic::opengl::buffer::FrameBuffer::SetViewport(int x, int y, int width, int height) -> void
