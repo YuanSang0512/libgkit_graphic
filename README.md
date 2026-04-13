@@ -19,6 +19,7 @@ src/
 │   ├── Texture.hpp
 │   ├── FrameBuffer.hpp
 │   ├── RenderBuffer.hpp
+│   ├── StateManager.hpp
 │   └── config.hpp      # Configuration (texture types, screen size)
 └── debug/          # Debug utilities (GLCall macro, error logging)
 ```
@@ -71,7 +72,6 @@ renderer.DrawInstance(vertexArray, indexBuffer, shader, instanceCount);
 - [ ] Remove temporary debug system (`src/debug/`)
 - [ ] Remove test folder
 - [ ] Remove temporary shader file parsing and texture loading (replace with main library's file I/O, adapt resource reading format, further encapsulate rendering interfaces)
-- [ ] Add RAII-based resource management for automatic Bind/Unbind handling
 
 ## Build Requirements
 
