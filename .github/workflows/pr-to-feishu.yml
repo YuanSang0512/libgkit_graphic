@@ -1,0 +1,196 @@
+name: pr-to-feishu
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - closed
+
+permissions:
+  contents: read
+
+jobs:
+  notify-reviewers:
+    name: Notify Feishu Code Reviewers
+    if: ${{ github.event.pull_request.base.repo.full_name == 'gkit-org/libgkit' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Feishu group and mention code reviewers
+        uses: actions/github-script@v7
+        env:
+          FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_CODE_REVIEWER_ROLE_ID: ${{ secrets.FEISHU_CODE_REVIEWER_ROLE_ID }}
+        with:
+          script: |
+            const pr = context.payload.pull_request
+            if (!pr) {
+              core.setFailed('pull_request payload is missing')
+              return
+            }
+
+            const requiredSecrets = [
+              'FEISHU_APP_ID',
+              'FEISHU_APP_SECRET',
+              'FEISHU_WEBHOOK_URL',
+              'FEISHU_CODE_REVIEWER_ROLE_ID'
+            ]
+
+            for (const key of requiredSecrets) {
+              if (!process.env[key]) {
+                core.setFailed(`Missing required secret: ${key}`)
+                return
+              }
+            }
+
+            async function feishuRequest(url, options) {
+              const resp = await fetch(url, options)
+              const raw = await resp.text()
+              let data = null
+              try {
+                data = JSON.parse(raw)
+              } catch {
+                data = null
+              }
+
+              if (!resp.ok || !data || (typeof data.code !== 'undefined' && data.code !== 0)) {
+                throw new Error(`Feishu API failed: HTTP ${resp.status}, ${raw}`)
+              }
+
+              return data
+            }
+
+            async function getTenantToken() {
+              const data = await feishuRequest('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  app_id: process.env.FEISHU_APP_ID,
+                  app_secret: process.env.FEISHU_APP_SECRET
+                })
+              })
+
+              const token = data.tenant_access_token
+              if (!token) {
+                throw new Error(`Failed to parse tenant_access_token: ${JSON.stringify(data)}`)
+              }
+
+              return token
+            }
+
+            async function listRoleMembersOpenId(tenantToken) {
+              const members = []
+              let pageToken = ''
+
+              while (true) {
+                const url = new URL(`https://open.feishu.cn/open-apis/contact/v3/functional_roles/${encodeURIComponent(process.env.FEISHU_CODE_REVIEWER_ROLE_ID)}/members`)
+                url.searchParams.set('page_size', '100')
+                url.searchParams.set('user_id_type', 'open_id')
+                if (pageToken) {
+                  url.searchParams.set('page_token', pageToken)
+                }
+
+                const data = await feishuRequest(url.toString(), {
+                  method: 'GET',
+                  headers: {
+                    Authorization: `Bearer ${tenantToken}`,
+                    'Content-Type': 'application/json'
+                  }
+                })
+
+                const list = data?.data?.members || []
+                for (const member of list) {
+                  if (member?.user_id) {
+                    members.push(member.user_id)
+                  }
+                }
+
+                if (!data?.data?.has_more) {
+                  break
+                }
+
+                pageToken = data?.data?.page_token || ''
+                if (!pageToken) {
+                  break
+                }
+              }
+
+              return Array.from(new Set(members))
+            }
+
+            async function notifyWebhook(text) {
+              const resp = await fetch(process.env.FEISHU_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  msg_type: 'text',
+                  content: {
+                    text
+                  }
+                })
+              })
+
+              const raw = await resp.text()
+              if (!resp.ok) {
+                throw new Error(`Failed to notify Feishu webhook: HTTP ${resp.status}, ${raw}`)
+              }
+
+              let data = null
+              try {
+                data = JSON.parse(raw)
+              } catch {
+                data = null
+              }
+
+              if (data && typeof data.code !== 'undefined' && data.code !== 0) {
+                throw new Error(`Feishu webhook returned error: ${raw}`)
+              }
+            }
+
+            core.info(`event.action=${context.payload.action}`)
+            core.info(`repo=${context.repo.owner}/${context.repo.repo}`)
+            core.info(`base=${pr.base?.repo?.full_name || 'unknown'}`)
+            core.info(`head=${pr.head?.repo?.full_name || 'unknown'}`)
+
+            const tenantToken = await getTenantToken()
+            core.setSecret(tenantToken)
+
+            const reviewerOpenIds = await listRoleMembersOpenId(tenantToken)
+            if (reviewerOpenIds.length === 0) {
+              await notifyWebhook([
+                'GitHub 有新的 PR，但未查询到 code_reviewer 角色成员：',
+                `- 事件: ${context.payload.action}`,
+                `- 标题: ${pr.title}`,
+                `- 链接: ${pr.html_url}`,
+                `- Contributor: ${pr.user?.login || 'unknown'}`,
+                `- 编号: #${pr.number}`,
+                `- 角色ID: ${process.env.FEISHU_CODE_REVIEWER_ROLE_ID}`
+              ].join('\n'))
+              core.info('No members found in reviewer role; sent fallback notification.')
+              return
+            }
+
+            const action = context.payload.action
+            const titleLine = action === 'closed'
+              ? `GitHub PR 已关闭（${pr.merged ? 'merged' : 'closed'}）：`
+              : `GitHub PR 需要 Review（${action}）：`
+
+            const mentions = action === 'closed'
+              ? ''
+              : reviewerOpenIds.map((id) => `<at user_id="${id}">code_reviewer</at>`).join(' ')
+
+            const message = [
+              mentions,
+              titleLine,
+              `- 标题: ${pr.title}`,
+              `- 链接: ${pr.html_url}`,
+              `- Contributor: ${pr.user?.login || 'unknown'}`,
+              `- 编号: #${pr.number}`
+            ].filter((line) => line && line.trim().length > 0).join('\n')
+
+            await notifyWebhook(message)
+            core.info(`Notified reviewer group members: ${reviewerOpenIds.length}`)
