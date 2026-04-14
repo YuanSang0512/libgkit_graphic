@@ -13,7 +13,7 @@ permissions:
 jobs:
   notify-reviewers:
     name: Notify Feishu Code Reviewers
-    if: ${{ github.event.pull_request.base.repo.full_name == 'gkit-org/libgkit' }}
+    if: ${{ github.event.pull_request.base.repo.full_name == 'gkit-org/libgkit_graphic' }}
     runs-on: ubuntu-latest
     steps:
       - name: Notify Feishu group and mention code reviewers
