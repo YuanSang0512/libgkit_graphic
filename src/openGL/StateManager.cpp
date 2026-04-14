@@ -109,7 +109,7 @@ auto StateManager::SetStencilTest(bool enable) -> void
 	}
 }
 
-auto StateManager::SetStencil(CompareFunc func, int ref, uint8_t mask) -> void
+auto StateManager::SetStencil(CompareFunc func, uint32_t ref, uint32_t mask) -> void
 {
 	if (m_StencilState.compareFunc != func || m_StencilState.ref != ref || m_StencilState.readMask != mask) {
 		m_StencilState.compareFunc = func;
@@ -129,7 +129,7 @@ auto StateManager::SetStencilOp(StencilOp fail, StencilOp zFail, StencilOp zPass
 	}
 }
 
-auto StateManager::SetStencilMask(uint8_t mask) -> void
+auto StateManager::SetStencilMask(uint32_t mask) -> void
 {
 	if (m_StencilState.writeMask != mask) {
 		m_StencilState.writeMask = mask;

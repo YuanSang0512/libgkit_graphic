@@ -36,7 +36,7 @@ auto gkit::graphic::opengl::buffer::FrameBuffer::DetachColorTexture(int slot) ->
 auto gkit::graphic::opengl::buffer::FrameBuffer::AttachDepthStencil(const RenderBuffer& rbo) -> void {
 	Bind();
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, 
-		GL_RENDERBUFFER, rbo.GetRendererID());
+		GL_RENDERBUFFER, rbo.GetRenderID());
 }
 
 auto gkit::graphic::opengl::buffer::FrameBuffer::DetachDepthStencil() -> void {

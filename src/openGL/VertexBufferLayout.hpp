@@ -69,10 +69,10 @@ namespace gkit::graphic::opengl::buffer {
 		}
 
 		/**
-		* @brief Get all elements in this layout
-		* @return Vector of vertex buffer elements
+		* @brief Get all elements in this layout (by const reference - zero copy)
+		* @return Const reference to vector of vertex buffer elements
 		*/
-		inline auto GetElements() const -> const std::vector<VertexBufferElement> { return m_Elements; }
+		[[nodiscard]] inline auto GetElements() const -> const std::vector<VertexBufferElement>& { return m_Elements; }
 
 		/**
 		* @brief Get the stride (bytes between vertices)

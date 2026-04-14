@@ -16,7 +16,7 @@ namespace gkit::graphic::opengl{
 	class Texture
 	{
 	private:
-		unsigned int m_RendererID;          ///< OpenGL texture ID
+		uint32_t m_RendererID;          ///< OpenGL texture ID
 		std::string m_FilePath;            ///< Path to the texture file
 		unsigned char* m_LocalBuffer;      ///< Local buffer for texture data
 		int m_Width, m_Height, m_BPP;     ///< Texture dimensions and bits per pixel
@@ -58,7 +58,7 @@ namespace gkit::graphic::opengl{
 		*/
 		inline auto GetHeight() const -> int { return m_Height; }
 
-		inline auto GetRenderID() const -> int {return m_RendererID; }
+		[[nodiscard]] inline auto GetRenderID() const -> uint32_t { return m_RendererID; }
 
 	private:
 		/**

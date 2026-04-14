@@ -15,7 +15,7 @@ namespace gkit::graphic::opengl::buffer{
 	class FrameBuffer
 	{
 	private:
-		unsigned int m_RendererID;  ///< OpenGL framebuffer ID
+		uint32_t m_RendererID;  ///< OpenGL framebuffer ID
 		unsigned int fb_height, fb_width;	///< frameBuffer size
 		unsigned int leftX = 0, bottomY = 0;	///< left bottom coordinate of frameBuffer
 	public:

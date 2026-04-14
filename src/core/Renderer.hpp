@@ -4,6 +4,7 @@
 #include "openGL/VertexArray.hpp"
 #include "core/Shader.hpp"
 #include "openGL/StateManager.hpp"
+#include "openGL/config.hpp"
 
 #include <cstdint>
 
@@ -30,9 +31,10 @@ namespace gkit::graphic {
 		/**
 		* @brief Clear the current framebuffer
 		*
-		* Clears the color and depth buffers to prepare for the next frame.
+		* @param flags Bitmask specifying which buffers to clear (e.g., ClearFlags::Color | ClearFlags::Depth)
+		*              Defaults to ClearFlags::All (clears all buffers)
 		*/
-		auto Clear() const -> void;
+		auto Clear(opengl::ClearFlags flags = opengl::ClearFlags::All) const -> void;
 
 		/**
 		* @brief Draw indexed geometry

@@ -51,9 +51,9 @@ public:
 	struct StencilState {
 		bool enabled = false;
 		CompareFunc compareFunc = CompareFunc::Always;
-		int ref = 0;
-		uint8_t readMask = 0xFF;
-		uint8_t writeMask = 0xFF;
+		uint32_t ref = 0;
+		uint32_t readMask = 0xFF;
+		uint32_t writeMask = 0xFF;
 		StencilOp fail = StencilOp::Keep;
 		StencilOp zFail = StencilOp::Keep;
 		StencilOp zPass = StencilOp::Keep;
@@ -94,10 +94,10 @@ public:
 	auto SetStencilTest(bool enable) -> void;
 
 	/// @brief Set stencil state
-	auto SetStencil(CompareFunc func, int ref, uint8_t mask) -> void;
+	auto SetStencil(CompareFunc func, uint32_t ref, uint32_t mask) -> void;
 
 	/// @brief Set stencil write mask
-	auto SetStencilMask(uint8_t mask) -> void;
+	auto SetStencilMask(uint32_t mask) -> void;
 
 	/// @brief Set stencil operations
 	auto SetStencilOp(StencilOp fail, StencilOp zFail, StencilOp zPass) -> void;

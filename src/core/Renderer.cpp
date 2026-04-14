@@ -18,9 +18,10 @@ auto gkit::graphic::Renderer::GetStateManager() -> opengl::StateManager&
 	return opengl::StateManager::Get();
 }
 
-auto gkit::graphic::Renderer::Clear() const -> void
+auto gkit::graphic::Renderer::Clear(opengl::ClearFlags flags) const -> void
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    GLbitfield mask = static_cast<GLbitfield>(flags);
+    glClear(mask);
 }
 
 auto gkit::graphic::Renderer::Draw(const gkit::graphic::opengl::VertexArray& va, const gkit::graphic::opengl::buffer::IndexBuffer& ib, const gkit::graphic::Shader& shader) const -> void

@@ -79,7 +79,7 @@ int main()
         #pragma region quad
         // Full-screen quad vertex data (post-processing)
         float quadVertices[] = {
-            // positions        // tex coords
+            // positions                    // tex coords
             -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
             1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
             1.0f,  1.0f, 0.0f,  1.0f, 1.0f,
@@ -129,7 +129,7 @@ int main()
 
             fbo.Bind();
             fbo.SetViewport(0, 0, screenWidth, screenHeight);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            renderer.Clear(gkit::graphic::opengl::ClearFlags::All);
             // 1. Render to framebuffer
             picShader.Bind();
             mainTexture.Bind(0);
@@ -137,7 +137,7 @@ int main()
 
             // 2. Render to screen (post-processing)
             fbo.Unbind();
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+            renderer.Clear(gkit::graphic::opengl::ClearFlags::All);
             gkit::graphic::opengl::window::SetViewport(0, 0, screenWidth/2, screenHeight/2);
             stateManager.SetStencilTest(true);
             stateManager.SetStencil(gkit::graphic::opengl::CompareFunc::Always, 1, 0xFF);

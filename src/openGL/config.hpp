@@ -95,6 +95,25 @@ namespace gkit::graphic::opengl{
 		Invert  = GL_INVERT
 	};
 
+	// ============================================
+	// Clear Options
+	// ============================================
+	enum class ClearFlags : GLbitfield {
+    Color   = GL_COLOR_BUFFER_BIT,        // Clear Color
+    Depth   = GL_DEPTH_BUFFER_BIT,        // Clear Depth
+    Stencil = GL_STENCIL_BUFFER_BIT,      // Clear Stencil
+
+    // Common Combinations
+    ColorDepth = Color | Depth,           // Color + Depth
+    All        = Color | Depth | Stencil   // Clear All
+	};
+
+	constexpr ClearFlags operator|(ClearFlags a, ClearFlags b) noexcept {
+		return static_cast<ClearFlags>(
+			static_cast<GLbitfield>(a) | static_cast<GLbitfield>(b)
+		);
+	}
+
 }
 
 namespace gkit::graphic::opengl::window {
