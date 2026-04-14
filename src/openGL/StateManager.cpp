@@ -186,7 +186,6 @@ auto StateManager::ApplyBlendState() -> void
 	} else {
 		GLCall(glDisable(GL_BLEND));
 	}
-	GLCall(glBlendFunc(static_cast<GLenum>(m_BlendState.srcRGB), static_cast<GLenum>(m_BlendState.dstRGB)));
 	GLCall(glBlendFuncSeparate(
 		static_cast<GLenum>(m_BlendState.srcRGB), static_cast<GLenum>(m_BlendState.dstRGB),
 		static_cast<GLenum>(m_BlendState.srcAlpha), static_cast<GLenum>(m_BlendState.dstAlpha)));
