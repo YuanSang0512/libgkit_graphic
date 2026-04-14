@@ -138,7 +138,7 @@ int main()
             // 2. Render to screen (post-processing)
             fbo.Unbind();
             renderer.Clear(gkit::graphic::opengl::ClearFlags::All);
-            gkit::graphic::opengl::window::SetViewport(0, 0, screenWidth/2, screenHeight/2);
+            gkit::graphic::opengl::viewport::SetViewport(0, 0, screenWidth/2, screenHeight/2);
             stateManager.SetStencilTest(true);
             stateManager.SetStencil(gkit::graphic::opengl::CompareFunc::Always, 1, 0xFF);
             stateManager.SetStencilOp(
@@ -150,7 +150,7 @@ int main()
             mainTexture.Bind(0);
             renderer.Draw(picVAO, picIBO, picShader);
 
-            gkit::graphic::opengl::window::SetViewport(0, 0, screenWidth, screenHeight);
+            gkit::graphic::opengl::viewport::SetViewport(0, 0, screenWidth, screenHeight);
             stateManager.SetStencil(gkit::graphic::opengl::CompareFunc::Equal, 1, 0xFF);
             stateManager.SetStencilOp(
                  gkit::graphic::opengl::StencilOp::Keep, 
@@ -162,7 +162,7 @@ int main()
             postShader.SetUniform1i("screenTexture", 0);
             renderer.Draw(quadVAO, quadIB, postShader);
             
-            gkit::graphic::opengl::window::SetViewport(0, 0, screenWidth/4, screenHeight/4);
+            gkit::graphic::opengl::viewport::SetViewport(0, 0, screenWidth/4, screenHeight/4);
             postShader.Bind();
             fboTexture.Bind(0);
             postShader.SetUniform1i("screenTexture", 0);

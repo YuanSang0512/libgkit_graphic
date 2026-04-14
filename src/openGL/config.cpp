@@ -2,7 +2,7 @@
 
 #include <glad/gl.h>
 
-namespace gkit::graphic::opengl::window {
+namespace gkit::graphic::opengl::viewport {
 
 	auto SetViewport(int x, int y, int width, int height) -> void
 	{

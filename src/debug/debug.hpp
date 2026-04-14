@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdlib>
-
 // Platform-specific debug break macro
 #ifdef _MSC_VER
     #define DEBUG_BREAK() __debugbreak()

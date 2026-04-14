@@ -116,7 +116,7 @@ namespace gkit::graphic::opengl{
 
 }
 
-namespace gkit::graphic::opengl::window {
+namespace gkit::graphic::opengl::viewport {
 
 	/// <summary>
 	/// Set viewport with custom position and size
