@@ -20,7 +20,7 @@ gkit::graphic::Shader::~Shader()
     GLCall(glDeleteProgram(m_RendererID));
 }
 
-uint32_t gkit::graphic::Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+auto gkit::graphic::Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader) -> uint32_t
 {
     uint32_t program = glCreateProgram();
     uint32_t vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
@@ -35,7 +35,7 @@ uint32_t gkit::graphic::Shader::CreateShader(const std::string& vertexShader, co
     return program;
 }
 
-gkit::graphic::ShaderProgramSource gkit::graphic::Shader::ParseShader(const std::string& filePath)
+auto gkit::graphic::Shader::ParseShader(const std::string& filePath) -> ShaderProgramSource
 {
     std::cout << filePath << std::endl;
     std::ifstream stream(filePath);
@@ -72,7 +72,7 @@ gkit::graphic::ShaderProgramSource gkit::graphic::Shader::ParseShader(const std:
     return { ss[0].str(), ss[1].str() };
 }
 
-uint32_t gkit::graphic::Shader::CompileShader(uint32_t type, const std::string& source)
+auto gkit::graphic::Shader::CompileShader(uint32_t type, const std::string& source) -> uint32_t
 {
     uint32_t id = glCreateShader(type);
     const char* src = source.c_str();
@@ -99,60 +99,60 @@ uint32_t gkit::graphic::Shader::CompileShader(uint32_t type, const std::string& 
     return id;
 }
 
-void gkit::graphic::Shader::Bind() const
+auto gkit::graphic::Shader::Bind() const -> void
 {
     GLCall(glUseProgram(m_RendererID));
 }
-void gkit::graphic::Shader::Unbind() const
+auto gkit::graphic::Shader::Unbind() const -> void
 {
     GLCall(glUseProgram(0));
 }
 
 //set uniforms
 
-void gkit::graphic::Shader::SetUniform1i(const std::string& name, int value)
+auto gkit::graphic::Shader::SetUniform1i(const std::string& name, int value) -> void
 {
     GLCall(glUniform1i(GetUniformLocation(name), value));
 }
 
-void gkit::graphic::Shader::SetUniform1f(const std::string& name, float value)
+auto gkit::graphic::Shader::SetUniform1f(const std::string& name, float value) -> void
 {
     GLCall(glUniform1f(GetUniformLocation(name), value));
 }
 
-void gkit::graphic::Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+auto gkit::graphic::Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) -> void
 {
     GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 }
 
-void gkit::graphic::Shader::SetUniformMat4f(const std::string& name, const float* matrix)
+auto gkit::graphic::Shader::SetUniformMat4f(const std::string& name, const float* matrix) -> void
 {
     GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, matrix));
 }
 
-void gkit::graphic::Shader::SetUniformMat3f(const std::string& name, const float* matrix)
+auto gkit::graphic::Shader::SetUniformMat3f(const std::string& name, const float* matrix) -> void
 {
     GLCall(glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, matrix));
 }
 
-void gkit::graphic::Shader::SetUniformVec4f(const std::string& name, const float* vector4)
+auto gkit::graphic::Shader::SetUniformVec4f(const std::string& name, const float* vector4) -> void
 {
     GLCall(glUniform4fv(GetUniformLocation(name), 1, vector4));
 }
 
-void gkit::graphic::Shader::SetUniformVec3f(const std::string& name, const float* vector3)
+auto gkit::graphic::Shader::SetUniformVec3f(const std::string& name, const float* vector3) -> void
 {
     GLCall(glUniform3fv(GetUniformLocation(name), 1, vector3));
 }
 
 
-void gkit::graphic::Shader::SetUniform1iv(const std::string& name, const int sz, const int* ind)
+auto gkit::graphic::Shader::SetUniform1iv(const std::string& name, const int sz, const int* ind) -> void
 {
     GLCall(glUniform1iv(GetUniformLocation(name), sz, ind));
 }
 
 
-int gkit::graphic::Shader::GetUniformLocation(const std::string& name)
+auto gkit::graphic::Shader::GetUniformLocation(const std::string& name) -> int
 {
     if (m_UniformLocationCach.find(name) != m_UniformLocationCach.end())
         return m_UniformLocationCach[name];

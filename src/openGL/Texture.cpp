@@ -87,7 +87,7 @@ gkit::graphic::opengl::Texture::~Texture()
     }
 }
 
-void gkit::graphic::opengl::Texture::Bind(unsigned int slot) const
+auto gkit::graphic::opengl::Texture::Bind(unsigned int slot) const -> void
 {
 	if (m_Type == TextureType::TEXTURE_CUBE_MAP)
 	{
@@ -101,7 +101,7 @@ void gkit::graphic::opengl::Texture::Bind(unsigned int slot) const
 	}
 }
 
-void gkit::graphic::opengl::Texture::Unbind() const
+auto gkit::graphic::opengl::Texture::Unbind() const -> void
 {
 	if (m_Type == TextureType::TEXTURE_CUBE_MAP)
 	{

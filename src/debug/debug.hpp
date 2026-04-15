@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstdlib>
-
 // Platform-specific debug break macro
 #ifdef _MSC_VER
     #define DEBUG_BREAK() __debugbreak()
@@ -31,7 +29,7 @@
  *
  * Retrieves and discards all error flags from the OpenGL error queue.
  */
-void GLClearError();
+auto GLClearError() -> void;
 
 /**
  * @brief Log an OpenGL function call and check for errors
@@ -40,4 +38,4 @@ void GLClearError();
  * @param line Line number in the source file
  * @return true if no error occurred, false otherwise
  */
-bool GLLogCall(const char* function, const char* file, int line);
+auto GLLogCall(const char* function, const char* file, int line) -> bool;

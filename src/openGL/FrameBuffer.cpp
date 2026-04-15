@@ -10,7 +10,6 @@ gkit::graphic::opengl::buffer::FrameBuffer::FrameBuffer(int width, int height)
 	: fb_width(width), fb_height(height)
 {
 	GLCall(glGenFramebuffers(1, &m_RendererID));
-	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID));
 }
 
 gkit::graphic::opengl::buffer::FrameBuffer::~FrameBuffer()
@@ -22,31 +21,31 @@ gkit::graphic::opengl::buffer::FrameBuffer::~FrameBuffer()
 	}
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::AttachColorTexture(const gkit::graphic::opengl::Texture& texture, int slot)
+auto gkit::graphic::opengl::buffer::FrameBuffer::AttachColorTexture(const gkit::graphic::opengl::Texture& texture, int slot) -> void
 {
 	Bind();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + slot, GL_TEXTURE_2D, texture.GetRenderID(), 0);
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::DetachColorTexture(int slot)
+auto gkit::graphic::opengl::buffer::FrameBuffer::DetachColorTexture(int slot) -> void
 {
 	Bind();
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + slot, GL_TEXTURE_2D, 0, 0);
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::AttachDepthStencil(const RenderBuffer& rbo) {
+auto gkit::graphic::opengl::buffer::FrameBuffer::AttachDepthStencil(const RenderBuffer& rbo) -> void {
 	Bind();
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, 
-		GL_RENDERBUFFER, rbo.GetRendererID());
+		GL_RENDERBUFFER, rbo.GetRenderID());
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::DetachDepthStencil() {
+auto gkit::graphic::opengl::buffer::FrameBuffer::DetachDepthStencil() -> void {
 	Bind();
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
 								GL_RENDERBUFFER, 0);
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::Check()
+auto gkit::graphic::opengl::buffer::FrameBuffer::Check() -> void
 {
 	Bind();
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -59,31 +58,30 @@ void gkit::graphic::opengl::buffer::FrameBuffer::Check()
 	{
 		std::cout << "FRAMEBUFFER:: Framebuffer is complete!" << std::endl;
 	}
+	Unbind();
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::SetViewport(int x, int y, int width, int height)
+auto gkit::graphic::opengl::buffer::FrameBuffer::SetViewport(int x, int y, int width, int height) -> void
 {
 	GLCall(glViewport(x, y, width, height));
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::SetViewport(int width, int height)
+auto gkit::graphic::opengl::buffer::FrameBuffer::SetViewport(int width, int height) -> void
 {
 	GLCall(glViewport(leftX, bottomY, width, height));
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::SetViewport()
+auto gkit::graphic::opengl::buffer::FrameBuffer::SetViewport() -> void
 {
 	GLCall(glViewport(leftX, bottomY, fb_width, fb_height));
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::Bind() const
+auto gkit::graphic::opengl::buffer::FrameBuffer::Bind() const -> void
 {
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID));
-	GLCall(glEnable(GL_DEPTH_TEST));
-	GLCall(glViewport(leftX, bottomY, fb_width, fb_height));
 }
 
-void gkit::graphic::opengl::buffer::FrameBuffer::Unbind() const
+auto gkit::graphic::opengl::buffer::FrameBuffer::Unbind() const -> void
 {
 	GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 }

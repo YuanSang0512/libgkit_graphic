@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 /**
  * @brief Render buffer wrapper for OpenGL renderbuffer objects
  *
@@ -12,7 +14,7 @@ namespace gkit::graphic::opengl::buffer{
 	class RenderBuffer
 	{
 	private:
-		unsigned int m_RendererID;  ///< OpenGL renderbuffer ID
+		uint32_t m_RendererID;  ///< OpenGL renderbuffer ID
 	public:
 		/**
 		* @brief Construct a renderbuffer
@@ -27,14 +29,14 @@ namespace gkit::graphic::opengl::buffer{
 		/**
 		* @brief Bind this renderbuffer to the current OpenGL context
 		*/
-		void Bind() const;
+		auto Bind() const -> void;
 
 		/**
 		* @brief Unbind this renderbuffer from the current OpenGL context
 		*/
-		void Unbind() const;
+		auto Unbind() const -> void;
 
-		int GetRendererID() const {return m_RendererID; }
+		[[nodiscard]] auto GetRenderID() const -> uint32_t { return m_RendererID; }
 	};
 
 }

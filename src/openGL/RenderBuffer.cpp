@@ -20,11 +20,11 @@ gkit::graphic::opengl::buffer::RenderBuffer::~RenderBuffer()
 	}
 }
 
-void gkit::graphic::opengl::buffer::RenderBuffer::Bind() const
+auto gkit::graphic::opengl::buffer::RenderBuffer::Bind() const -> void
 {
 	GLCall(glBindRenderbuffer(GL_RENDERBUFFER, m_RendererID));
 }
-void gkit::graphic::opengl::buffer::RenderBuffer::Unbind() const
+auto gkit::graphic::opengl::buffer::RenderBuffer::Unbind() const -> void
 {
 	GLCall(glBindRenderbuffer(GL_RENDERBUFFER, 0));
 }

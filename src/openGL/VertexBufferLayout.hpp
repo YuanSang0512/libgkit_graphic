@@ -69,16 +69,16 @@ namespace gkit::graphic::opengl::buffer {
 		}
 
 		/**
-		* @brief Get all elements in this layout
-		* @return Vector of vertex buffer elements
+		* @brief Get all elements in this layout (by const reference - zero copy)
+		* @return Const reference to vector of vertex buffer elements
 		*/
-		inline const std::vector<VertexBufferElement> GetElements() const { return m_Elements; }
+		[[nodiscard]] inline auto GetElements() const -> const std::vector<VertexBufferElement>& { return m_Elements; }
 
 		/**
 		* @brief Get the stride (bytes between vertices)
 		* @return Stride in bytes
 		*/
-		inline uint32_t GetStride() const { return m_Stride; }
+		inline auto GetStride() const -> uint32_t { return m_Stride; }
 	};
 
 	// Template specialization for float

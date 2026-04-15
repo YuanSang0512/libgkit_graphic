@@ -79,7 +79,7 @@ int main()
         #pragma region quad
         // Full-screen quad vertex data (post-processing)
         float quadVertices[] = {
-            // positions        // tex coords
+            // positions                    // tex coords
             -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
             1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
             1.0f,  1.0f, 0.0f,  1.0f, 1.0f,
@@ -111,8 +111,12 @@ int main()
         #pragma endregion
 
         #pragma region render
-        gkit::graphic::Renderer renderer;
-
+        auto& renderer = gkit::graphic::Renderer::Get();
+        auto& stateManager = renderer.GetStateManager();
+        
+        int screenWidth = gkit::graphic::opengl::SCR_WIDTH;
+        int screenHeight = gkit::graphic::opengl::SCR_HEIGHT;
+        glDisable(GL_DEPTH_TEST);
         // render cycle
         while (!glfwWindowShouldClose(window))
         {
@@ -124,7 +128,8 @@ int main()
                 glfwSetWindowShouldClose(window, true);
 
             fbo.Bind();
-            renderer.Clear();
+            fbo.SetViewport(0, 0, screenWidth, screenHeight);
+            renderer.Clear(gkit::graphic::opengl::ClearFlags::All);
             // 1. Render to framebuffer
             picShader.Bind();
             mainTexture.Bind(0);
@@ -132,12 +137,39 @@ int main()
 
             // 2. Render to screen (post-processing)
             fbo.Unbind();
-            renderer.Clear();
+            renderer.Clear(gkit::graphic::opengl::ClearFlags::All);
+            gkit::graphic::opengl::viewport::SetViewport(0, 0, screenWidth/2, screenHeight/2);
+            stateManager.SetStencilTest(true);
+            stateManager.SetStencil(gkit::graphic::opengl::CompareFunc::Always, 1, 0xFF);
+            stateManager.SetStencilOp(
+                 gkit::graphic::opengl::StencilOp::Keep, 
+                gkit::graphic::opengl::StencilOp::Keep, 
+                gkit::graphic::opengl::StencilOp::Replace);
+            stateManager.Apply();
+            picShader.Bind();
+            mainTexture.Bind(0);
+            renderer.Draw(picVAO, picIBO, picShader);
+
+            gkit::graphic::opengl::viewport::SetViewport(0, 0, screenWidth, screenHeight);
+            stateManager.SetStencil(gkit::graphic::opengl::CompareFunc::Equal, 1, 0xFF);
+            stateManager.SetStencilOp(
+                 gkit::graphic::opengl::StencilOp::Keep, 
+                gkit::graphic::opengl::StencilOp::Keep, 
+                gkit::graphic::opengl::StencilOp::Keep);
+            stateManager.Apply();
             postShader.Bind();
             fboTexture.Bind(0);
             postShader.SetUniform1i("screenTexture", 0);
             renderer.Draw(quadVAO, quadIB, postShader);
-
+            
+            gkit::graphic::opengl::viewport::SetViewport(0, 0, screenWidth/4, screenHeight/4);
+            postShader.Bind();
+            fboTexture.Bind(0);
+            postShader.SetUniform1i("screenTexture", 0);
+            renderer.Draw(quadVAO, quadIB, postShader);
+            
+            stateManager.SetStencilTest(false);
+            stateManager.Apply();
             // swap buffer
             glfwSwapBuffers(window);
         }

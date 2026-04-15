@@ -26,12 +26,12 @@ namespace gkit::graphic::opengl::buffer{
 		/**
 		* @brief Bind this index buffer to the current OpenGL context
 		*/
-		void Bind() const;
+		auto Bind() const -> void;
 
 		/**
 		* @brief Unbind this index buffer from the current OpenGL context
 		*/
-		void Unbind() const;
+		auto Unbind() const -> void;
 
 		/**
 		* @brief Get the number of indices in this buffer
